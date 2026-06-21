@@ -17,6 +17,10 @@ project:
     - file: nanopubs/PUBLISHED.md
 site:
   title: "fiesta-galaxy-cellprofiler-eo"
+  # Use a local favicon so the MyST build never fetches the remote default from
+  # mystmd.org (that fetch is flaky in CI and fails the build — ERR_STREAM_PREMATURE_CLOSE).
+  options:
+    favicon: figures/logos/fiesta.png
 # IMPORTANT: do NOT set base_url here — MyST silently ignores the key.
 # BASE_URL is set in .github/workflows/jupyter-book.yml as an env var on the
 # `myst build` step, derived from the GitHub repo name. See
