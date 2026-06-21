@@ -1,0 +1,156 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.2/context",
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      "@id": "ro-crate-metadata.json",
+      "conformsTo": [
+        { "@id": "https://w3id.org/ro/crate/1.2" },
+        { "@id": "https://w3id.org/ro/wfrun/process/0.5" },
+        { "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0" }
+      ],
+      "about": { "@id": "./" }
+    },
+    {
+      "@id": "./",
+      "@type": ["Dataset", "ResearchObject"],
+      "name": "fiesta-galaxy-cellprofiler-eo",
+      "description": "Cross-discipline demonstration: the CellProfiler object-tracking pipeline (TrackObjects), built to follow dividing nuclei, run through a Galaxy workflow to track drifting icebergs across a satellite time-series (OSCARS-FIESTA).",
+      "datePublished": "2026-06-21",
+      "license": { "@id": "https://spdx.org/licenses/MIT" },
+      "publisher": { "@id": "https://orcid.org/0000-0002-1784-2920" },
+      "author": [{ "@id": "https://orcid.org/0000-0002-1784-2920" }],
+      "mainEntity": { "@id": "workflow/main_workflow.ga" },
+      "hasPart": [
+        { "@id": "Snakefile" },
+        { "@id": "workflow/main_workflow.ga" },
+        { "@id": "pixi.toml" },
+        { "@id": "pixi.lock" },
+        { "@id": "Dockerfile" },
+        { "@id": "notebooks/01_data_download.py" },
+        { "@id": "notebooks/02_data_clean.py" },
+        { "@id": "notebooks/03_analysis.py" },
+        { "@id": "notebooks/04_figures.py" },
+        { "@id": "scripts/cellprofiler_tracking.py" },
+        { "@id": "data/" },
+        { "@id": "results/" },
+        { "@id": "figures/" },
+        { "@id": "nanopubs/PUBLISHED.md" }
+      ],
+      "citation": [
+        { "@id": "https://doi.org/10.1371/journal.pbio.2005970" }
+      ]
+    },
+    {
+      "@id": "https://orcid.org/0000-0002-1784-2920",
+      "@type": "Person",
+      "name": "Anne Fouilloux",
+      "affiliation": "Lifewatch ERIC"
+    },
+    {
+      "@id": "workflow/main_workflow.ga",
+      "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
+      "name": "Galaxy CellProfiler object-tracking workflow",
+      "description": "Galaxy workflow assembling the CellProfiler module chain (ColorToGray, IdentifyPrimaryObjects, MeasureObject*, TrackObjects, OverlayOutlines, Tile, SaveImages, ExportToSpreadsheet) and running it on a time-series of frames. Executed on usegalaxy.eu.",
+      "programmingLanguage": { "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy" },
+      "input": [{ "@id": "data/" }],
+      "output": [{ "@id": "results/" }]
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy",
+      "@type": "ComputerLanguage",
+      "name": "Galaxy",
+      "url": "https://galaxyproject.org/"
+    },
+    {
+      "@id": "Snakefile",
+      "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
+      "name": "Replication pipeline",
+      "description": "Snakemake workflow orchestrating data download, cleaning, tracking analysis, and figure generation.",
+      "programmingLanguage": { "@id": "https://w3id.org/workflowhub/workflow-ro-crate#snakemake" },
+      "input": [{ "@id": "pixi.toml" }, { "@id": "pixi.lock" }],
+      "output": [{ "@id": "results/" }, { "@id": "figures/" }, { "@id": "nanopubs/PUBLISHED.md" }]
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate#snakemake",
+      "@type": "ComputerLanguage",
+      "name": "Snakemake",
+      "url": "https://snakemake.readthedocs.io/"
+    },
+    {
+      "@id": "pixi.toml",
+      "@type": ["File", "ConfigurationFile"],
+      "name": "Pixi workspace manifest (declared dependencies, features, tasks)",
+      "encodingFormat": "application/toml"
+    },
+    {
+      "@id": "pixi.lock",
+      "@type": ["File", "ConfigurationFile"],
+      "name": "Pixi per-platform lockfile (every package pinned to an exact build hash)",
+      "encodingFormat": "application/yaml"
+    },
+    {
+      "@id": "Dockerfile",
+      "@type": ["File", "ConfigurationFile"],
+      "name": "Container build specification",
+      "encodingFormat": "text/x-dockerfile"
+    },
+    {
+      "@id": "scripts/cellprofiler_tracking.py",
+      "@type": ["File", "SoftwareSourceCode"],
+      "name": "Two-path tracking driver (Galaxy via BioBlend, or local same-algorithm fallback)",
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "notebooks/01_data_download.py",
+      "@type": ["File", "SoftwareSourceCode", "Notebook"],
+      "name": "01 — Data download",
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "notebooks/02_data_clean.py",
+      "@type": ["File", "SoftwareSourceCode", "Notebook"],
+      "name": "02 — Data clean",
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "notebooks/03_analysis.py",
+      "@type": ["File", "SoftwareSourceCode", "Notebook"],
+      "name": "03 — Tracking analysis",
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "notebooks/04_figures.py",
+      "@type": ["File", "SoftwareSourceCode", "Notebook"],
+      "name": "04 — Figures",
+      "programmingLanguage": "Python"
+    },
+    {
+      "@id": "data/",
+      "@type": "Dataset",
+      "name": "Downloaded input data (gitignored; populated by 01_data_download.py)"
+    },
+    {
+      "@id": "results/",
+      "@type": "Dataset",
+      "name": "Analysis output artefacts (tracks.csv, track_summary.json, galaxy_provenance.json)"
+    },
+    {
+      "@id": "figures/",
+      "@type": "Dataset",
+      "name": "Curated figures used in the Jupyter Book"
+    },
+    {
+      "@id": "nanopubs/PUBLISHED.md",
+      "@type": ["File", "TextObject"],
+      "name": "Registry of published FORRT nanopub URIs",
+      "description": "URIs of the published PICO / AIDA / FORRT Claim / Replication Study / Replication Outcome / CiTO Citation steps."
+    },
+    {
+      "@id": "https://doi.org/10.1371/journal.pbio.2005970",
+      "@type": "ScholarlyArticle",
+      "name": "CellProfiler 3.0: Next-generation image processing for biology",
+      "datePublished": "2018"
+    }
+  ]
+}

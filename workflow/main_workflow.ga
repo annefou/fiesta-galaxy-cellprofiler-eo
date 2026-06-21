@@ -1,0 +1,537 @@
+{
+    "a_galaxy_workflow": "true",
+    "annotation": "CellProfiler object-tracking pipeline (GTN 'Object tracking using CellProfiler', gxy.io/GTN:T00516) applied cross-discipline to a satellite time-series of drifting icebergs. Assembles the CellProfiler module chain (Starting Modules -> ColorToGray -> IdentifyPrimaryObjects -> MeasureObjectSizeShape -> MeasureObjectIntensity -> TrackObjects -> OverlayOutlines -> Tile -> SaveImages -> ExportToSpreadsheet) and runs it with the CellProfiler tool on the unzipped frames. NOTE: round-trip through the usegalaxy.eu workflow editor to resolve exact module tool_state schemas before first invocation; module tool versions (3.1.9+galaxy*) must exist on the target server.",
+    "comments": [],
+    "creator": [
+        {
+            "class": "Person",
+            "identifier": "https://orcid.org/0000-0002-1784-2920",
+            "name": "Anne Fouilloux"
+        }
+    ],
+    "format-version": "0.1",
+    "license": "MIT",
+    "name": "CellProfiler object tracking on EO (drifting icebergs)",
+    "report": {
+        "markdown": "\n# Workflow Execution Report\n\n## Inputs\n```galaxy\ninvocation_inputs()\n```\n\n## Outputs\n```galaxy\ninvocation_outputs()\n```\n\n## Workflow\n```galaxy\nworkflow_display()\n```\n"
+    },
+    "steps": {
+        "0": {
+            "annotation": "A zip archive of the ordered image time-series (frame_000.png, frame_001.png, ...). Frame order is the time axis that TrackObjects links across.",
+            "content_id": null,
+            "errors": null,
+            "id": 0,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "Zip of ordered frames (frame_000.png ...).",
+                    "name": "Image time-series (zip)"
+                }
+            ],
+            "label": "Image time-series (zip)",
+            "name": "Input dataset",
+            "outputs": [],
+            "position": {
+                "left": 0,
+                "top": 200
+            },
+            "tool_id": null,
+            "tool_state": "{\"optional\": false, \"tag\": null}",
+            "tool_version": null,
+            "type": "data_input",
+            "uuid": "16e42607-7fd0-4bc5-9b86-d37ce2f9f8f1",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "1": {
+            "annotation": "Extract the individual frames from the zip.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/imgteam/unzip/unzip/6.0+galaxy0",
+            "errors": null,
+            "id": 1,
+            "input_connections": {
+                "input_file": {
+                    "id": 0,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": "Unzip frames",
+            "name": "Unzip",
+            "outputs": [
+                {
+                    "name": "unzipped",
+                    "type": "input"
+                }
+            ],
+            "position": {
+                "left": 250,
+                "top": 200
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/imgteam/unzip/unzip/6.0+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "c34f7a64ee5e",
+                "name": "unzip",
+                "owner": "imgteam",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_file\": {\"__class__\": \"ConnectedValue\"}, \"extract_options\": {\"extract_all\": \"True\"}, \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "6.0+galaxy0",
+            "type": "tool",
+            "uuid": "a8c96d67-f828-4fa2-826e-bfa30218a51d",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "2": {
+            "annotation": "Starting Modules: Images, Metadata, NamesAndTypes, Groups. Metadata is extracted from the frame_<index> filename; NamesAndTypes assigns the single channel; Groups orders by index (the time axis).",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_common/cp_common/3.1.9+galaxy1",
+            "errors": null,
+            "id": 2,
+            "input_connections": {},
+            "inputs": [],
+            "label": "Starting Modules",
+            "name": "Starting Modules of CellProfiler",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 500,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_common/cp_common/3.1.9+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "b3a9531c4634",
+                "name": "cp_common",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"image_set_grouping\": \"OrigGray\", \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy1",
+            "type": "tool",
+            "uuid": "28699a16-c4bb-4def-ac3c-4519f674fd6d",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "3": {
+            "annotation": "ColorToGray: convert OrigColor frames to a single grayscale channel OrigGray.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_color_to_gray/cp_color_to_gray/3.1.9+galaxy0",
+            "errors": null,
+            "id": 3,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 2,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "ColorToGray",
+            "name": "ColorToGray",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 750,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_color_to_gray/cp_color_to_gray/3.1.9+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "2a2b04b9d1e1",
+                "name": "cp_color_to_gray",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"image_name\": \"OrigColor\", \"conversion_method\": {\"convert\": \"Combine\", \"grayscale_name\": \"OrigGray\"}, \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy0",
+            "type": "tool",
+            "uuid": "2cd7487d-b03e-403a-87bf-6908289ba235",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "4": {
+            "annotation": "IdentifyPrimaryObjects: segment icebergs as primary objects. Three-class Otsu thresholding, typical object diameter 30-9999 px, intensity-based declumping, discard objects touching the image border.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_identify_primary_objects/cp_identify_primary_objects/3.1.9+galaxy1",
+            "errors": null,
+            "id": 4,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 3,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "IdentifyPrimaryObjects",
+            "name": "IdentifyPrimaryObjects",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 1000,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_identify_primary_objects/cp_identify_primary_objects/3.1.9+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "f2f0f0f0aaaa",
+                "name": "cp_identify_primary_objects",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"image_name\": \"OrigGray\", \"object_name\": \"Nuclei\", \"size_range\": {\"min_size\": \"30\", \"max_size\": \"9999\"}, \"exclude_size\": \"Yes\", \"exclude_border_objects\": \"Yes\", \"threshold\": {\"threshold_strategy\": \"Global\", \"threshold_method\": \"Otsu\", \"two_class_otsu\": \"Three classes\", \"smoothing_scale\": \"1.3488\"}, \"declump\": {\"unclump_method\": \"Intensity\", \"watershed_method\": \"Intensity\"}, \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy1",
+            "type": "tool",
+            "uuid": "9dd0a1c7-5e94-4339-9d80-6f922b7bd8b6",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "5": {
+            "annotation": "MeasureObjectSizeShape: area, perimeter, eccentricity, etc. for each iceberg.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_measure_object_size_shape/cp_measure_object_size_shape/3.1.9+galaxy0",
+            "errors": null,
+            "id": 5,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 4,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "MeasureObjectSizeShape",
+            "name": "MeasureObjectSizeShape",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 1250,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_measure_object_size_shape/cp_measure_object_size_shape/3.1.9+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "c3c3c3c3bbbb",
+                "name": "cp_measure_object_size_shape",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"objects_to_measure\": \"Nuclei\", \"calculate_zernikes\": \"No\", \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy0",
+            "type": "tool",
+            "uuid": "e6fbcedd-5c10-401d-9297-c5a0883238f0",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "6": {
+            "annotation": "MeasureObjectIntensity: mean/integrated brightness for each iceberg.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_measure_object_intensity/cp_measure_object_intensity/3.1.9+galaxy0",
+            "errors": null,
+            "id": 6,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 5,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "MeasureObjectIntensity",
+            "name": "MeasureObjectIntensity",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 1500,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_measure_object_intensity/cp_measure_object_intensity/3.1.9+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "d4d4d4d4cccc",
+                "name": "cp_measure_object_intensity",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"images_to_measure\": \"OrigGray\", \"objects_to_measure\": \"Nuclei\", \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy0",
+            "type": "tool",
+            "uuid": "eb5997a9-c52f-4b62-8e4f-5ae4e5e01c7f",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "7": {
+            "annotation": "TrackObjects: link icebergs across consecutive frames. Tracking method = Overlap; maximum displacement between frames = 50 px. This is the core capability ported from nucleus tracking.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_track_objects/cp_track_objects/3.1.9+galaxy0",
+            "errors": null,
+            "id": 7,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 6,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "TrackObjects",
+            "name": "TrackObjects",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 1750,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_track_objects/cp_track_objects/3.1.9+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "e5e5e5e5dddd",
+                "name": "cp_track_objects",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"tracking_method\": \"Overlap\", \"object_name\": \"Nuclei\", \"maximum_pixel_distance\": \"50\", \"display_option\": \"Color and Number\", \"save_color_coded_image\": \"Yes\", \"image_name_color\": \"TrackedNuclei\", \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy0",
+            "type": "tool",
+            "uuid": "1d0b6c9f-b018-415b-a7ff-ea2f6b74e2f9",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "8": {
+            "annotation": "OverlayOutlines: draw the segmented iceberg outlines on the grayscale frame.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_overlay_outlines/cp_overlay_outlines/3.1.9+galaxy0",
+            "errors": null,
+            "id": 8,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 7,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "OverlayOutlines",
+            "name": "OverlayOutlines",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 2000,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_overlay_outlines/cp_overlay_outlines/3.1.9+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "f6f6f6f6eeee",
+                "name": "cp_overlay_outlines",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"blank_image\": \"No\", \"image_name\": \"OrigGray\", \"output_image_name\": \"OutlineImage\", \"outlines\": [{\"objects_to_display\": \"Nuclei\", \"outline_color\": \"#ff5000\"}], \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy0",
+            "type": "tool",
+            "uuid": "1670a160-293f-475f-8df6-62fa13f39ac8",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "9": {
+            "annotation": "Tile: assemble the per-frame tracked images into one montage for visual inspection.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_tile/cp_tile/3.1.9+galaxy0",
+            "errors": null,
+            "id": 9,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 8,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "Tile",
+            "name": "Tile",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 2250,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_tile/cp_tile/3.1.9+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "a7a7a7a7ffff",
+                "name": "cp_tile",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"input_image\": \"TrackedNuclei\", \"output_image\": \"TiledImage\", \"tile_method\": \"Across cycles\", \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy0",
+            "type": "tool",
+            "uuid": "4592c267-b9c7-4b91-871d-c34ba1190a90",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "10": {
+            "annotation": "SaveImages: export the tracked / tiled images as PNG.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_save_images/cp_save_images/3.1.9+galaxy1",
+            "errors": null,
+            "id": 10,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 9,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "SaveImages",
+            "name": "SaveImages",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 2500,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_save_images/cp_save_images/3.1.9+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "b8b8b8b80000",
+                "name": "cp_save_images",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"image_to_save\": \"TiledImage\", \"file_format\": \"png\", \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy1",
+            "type": "tool",
+            "uuid": "06201c36-ca62-4ee7-9202-d14e624ede05",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "11": {
+            "annotation": "ExportToSpreadsheet: write per-object measurements (incl. TrackObjects columns: track id / label, displacement, lifetime) to CSV. This is the final module; its output pipeline is run by CellProfiler.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_export_to_spreadsheet/cp_export_to_spreadsheet/3.1.9+galaxy1",
+            "errors": null,
+            "id": 11,
+            "input_connections": {
+                "input_pipeline": {
+                    "id": 10,
+                    "output_name": "output_pipeline"
+                }
+            },
+            "inputs": [],
+            "label": "ExportToSpreadsheet",
+            "name": "ExportToSpreadsheet",
+            "outputs": [
+                {
+                    "name": "output_pipeline",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 2750,
+                "top": 40
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_export_to_spreadsheet/cp_export_to_spreadsheet/3.1.9+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "c9c9c9c91111",
+                "name": "cp_export_to_spreadsheet",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_pipeline\": {\"__class__\": \"ConnectedValue\"}, \"add_metadata\": \"Yes\", \"representation_nan\": \"Yes\", \"export_all\": \"Yes\", \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy1",
+            "type": "tool",
+            "uuid": "1bb883e2-a3f8-465e-9b23-3b141f8f7fc6",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "12": {
+            "annotation": "CellProfiler: run the assembled pipeline (from ExportToSpreadsheet) on the unzipped frames. Outputs the measurements spreadsheet (with tracking columns) and the saved tracked/tiled images.",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_cellprofiler/cp_cellprofiler/3.1.9+galaxy0",
+            "errors": null,
+            "id": 12,
+            "input_connections": {
+                "pipeline": {
+                    "id": 11,
+                    "output_name": "output_pipeline"
+                },
+                "input_images": {
+                    "id": 1,
+                    "output_name": "unzipped"
+                }
+            },
+            "inputs": [],
+            "label": "CellProfiler",
+            "name": "Run CellProfiler pipeline",
+            "outputs": [
+                {
+                    "name": "output_csv",
+                    "type": "csv"
+                },
+                {
+                    "name": "output_images",
+                    "type": "png"
+                }
+            ],
+            "position": {
+                "left": 3050,
+                "top": 120
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/cp_cellprofiler/cp_cellprofiler/3.1.9+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "d0d0d0d02222",
+                "name": "cp_cellprofiler",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"pipeline\": {\"__class__\": \"ConnectedValue\"}, \"input_images\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": 0, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1.9+galaxy1",
+            "type": "tool",
+            "uuid": "a506e680-4735-4899-be98-93a42006f37e",
+            "when": null,
+            "workflow_outputs": [
+                {
+                    "label": "measurements",
+                    "output_name": "output_csv",
+                    "uuid": "5806901f-716f-42f8-948c-631e3a30c18e"
+                },
+                {
+                    "label": "tracked_images",
+                    "output_name": "output_images",
+                    "uuid": "e079e243-a63b-4c75-b5c6-fed97e6a72dd"
+                }
+            ]
+        }
+    },
+    "tags": [
+        "imaging",
+        "earth-observation",
+        "fiesta",
+        "tracking"
+    ],
+    "uuid": "e1262d3d-8f73-43a7-a9d5-64fd21cee2e7",
+    "version": 1
+}

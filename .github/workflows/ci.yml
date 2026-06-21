@@ -1,0 +1,73 @@
+name: CI smoke run
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Smoke test: runs the replication pipeline end-to-end via the Snakefile.
+# Large inputs should be cached via actions/cache@v5 — see data/README.md.
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Single source of truth for "should the pipeline run?" — see
+      # .github/actions/check-ready. Replaces the old per-workflow {{...}} grep
+      # that false-positived on the template's own doc/skill token examples and
+      # silently skipped CI green.
+      - name: Check repository readiness
+        id: guard
+        uses: ./.github/actions/check-ready
+
+      - name: Set up pixi
+        if: steps.guard.outputs.ready == 'true'
+        uses: prefix-dev/setup-pixi@v0.9.6
+        with:
+          pixi-version: v0.68.1
+          locked: true
+          cache: true
+
+      # ----- credentials (uncomment + add the matching GitHub secret) -----
+      #
+      # - name: Set up Copernicus Marine credentials
+      #   if: ${{ secrets.COPERNICUS_CREDENTIALS_BASE64 != '' }}
+      #   run: |
+      #     mkdir -p ~/.copernicusmarine
+      #     echo "${{ secrets.COPERNICUS_CREDENTIALS_BASE64 }}" | base64 -d \
+      #       > ~/.copernicusmarine/.copernicusmarine-credentials
+      #
+      # - name: Set up CDS credentials
+      #   if: ${{ secrets.CDSAPI_KEY != '' }}
+      #   run: |
+      #     echo "url: https://cds.climate.copernicus.eu/api/v2" > ~/.cdsapirc
+      #     echo "key: ${{ secrets.CDSAPI_KEY }}" >> ~/.cdsapirc
+
+      # ----- data caching (uncomment + adjust path/key) -----
+      #
+      # - name: Cache input data
+      #   id: cache_data
+      #   uses: actions/cache@v5
+      #   with:
+      #     path: data/raw
+      #     key: input-data-v1
+
+      - name: Run pipeline
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          FIESTA_ENGINE: local       # no Galaxy key in CI -> same-algorithm local fallback
+          FIESTA_DATA: synthetic     # deterministic, cloud-free, hermetic (no live GIBS dependency)
+        run: pixi run snakemake --cores 1 --forceall
+
+      - name: Upload results
+        if: always() && steps.guard.outputs.ready == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: ci-outputs
+          path: |
+            results/
+            figures/

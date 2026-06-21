@@ -1,0 +1,52 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "fiesta-galaxy-cellprofiler-eo",
+  "description": "Cross-discipline demonstration: the CellProfiler object-tracking pipeline (TrackObjects), built to follow dividing nuclei, run through a Galaxy workflow to track drifting icebergs across a satellite time-series (OSCARS-FIESTA).",
+  "version": "0.1.0",
+  "dateCreated": "2026-06-21",
+  "dateModified": "2026-06-21",
+  "license": "https://spdx.org/licenses/MIT",
+  "codeRepository": "https://github.com/annefou/fiesta-galaxy-cellprofiler-eo",
+  "identifier": "https://doi.org/10.5281/zenodo.PENDING-FIRST-RELEASE",
+  "@id": "https://doi.org/10.5281/zenodo.PENDING-FIRST-RELEASE",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "Python",
+    "version": "3.12"
+  },
+  "operatingSystem": ["Linux", "macOS"],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Anne",
+      "familyName": "Fouilloux",
+      "@id": "https://orcid.org/0000-0002-1784-2920",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Lifewatch ERIC"
+      }
+    }
+  ],
+  "keywords": [
+    "replication",
+    "reproducibility",
+    "FORRT",
+    "nanopublication",
+    "Science-Live",
+    "object-tracking",
+    "earth-observation",
+    "Galaxy"
+  ],
+  "referencePublication": {
+    "@type": "ScholarlyArticle",
+    "name": "CellProfiler 3.0: Next-generation image processing for biology",
+    "datePublished": "2018",
+    "@id": "https://doi.org/10.1371/journal.pbio.2005970"
+  },
+  "isPartOf": {
+    "@type": "Organization",
+    "name": "Science Live",
+    "url": "https://platform.sciencelive4all.org"
+  }
+}

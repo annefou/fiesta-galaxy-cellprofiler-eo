@@ -1,0 +1,8 @@
+{
+  "n_frames": 8,
+  "n_tracks": 4,
+  "mean_objects_per_frame": 3.12,
+  "longest_track_frames": 8,
+  "max_track_displacement_px": 261.54,
+  "engine": "local:skimage"
+}

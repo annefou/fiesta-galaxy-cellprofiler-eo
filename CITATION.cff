@@ -1,0 +1,49 @@
+cff-version: 1.2.0
+title: "fiesta-galaxy-cellprofiler-eo"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: "Fouilloux"
+    given-names: "Anne"
+    orcid: "https://orcid.org/0000-0002-1784-2920"
+    affiliation: "Lifewatch ERIC"
+repository-code: "https://github.com/annefou/fiesta-galaxy-cellprofiler-eo"
+license: MIT
+version: "0.1.0"
+date-released: "2026-06-21"
+# After your first GitHub release the Zenodo integration mints a concept DOI.
+# Replace the placeholder below once available (run /init-template again or edit
+# by hand), then mirror it into codemeta.json and nanopubs/drafts/07.
+doi: "10.5281/zenodo.PENDING-FIRST-RELEASE"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.PENDING-FIRST-RELEASE"
+    description: "Concept DOI (resolves to the latest version) — minted on first release"
+keywords:
+  - replication
+  - reproducibility
+  - FORRT
+  - nanopublication
+  - Science-Live
+  - object-tracking
+  - earth-observation
+  - icebergs
+  - Galaxy
+references:
+  - type: software
+    title: "CellProfiler: image analysis software for identifying and quantifying cell phenotypes"
+    authors:
+      - family-names: "Carpenter"
+        given-names: "Anne E."
+    year: "2006"
+    doi: "10.1186/gb-2006-7-10-r100"
+  - type: article
+    title: "CellProfiler 3.0: Next-generation image processing for biology"
+    authors:
+      - family-names: "McQuin"
+        given-names: "Claire"
+    year: "2018"
+    doi: "10.1371/journal.pbio.2005970"
+  - type: url
+    title: "Object tracking using CellProfiler — Galaxy Training Network tutorial"
+    url: "https://gxy.io/GTN:T00516"
