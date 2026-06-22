@@ -14,58 +14,53 @@
 # ---
 
 # %% [markdown]
-# # 03 — Tracking analysis (Galaxy CellProfiler workflow)
+# # 03 — Detection & tracking (Galaxy CellProfiler workflow)
 #
-# Runs the **CellProfiler object-tracking Galaxy workflow**
-# (`workflow/main_workflow.ga`, which assembles the CellProfiler module chain and
-# runs it) on the cleaned frame time-series and recovers, for every detected iceberg:
-#
-# - its **track id** (persistent identity across frames)
-# - its **centroid** per frame (the drift trajectory)
-# - its **area** and **mean intensity**
+# Detects and tracks **atmospheric rivers** across the ERA5 IVT time-series,
+# applying the established criteria of Guan & Waliser (2015) / tARget v4 /
+# ARTMIP (Shields et al. 2018): threshold IVT at **250 kg m⁻¹ s⁻¹**, keep
+# elongated objects (**length > 2000 km**, **length/width > 2**) with a
+# **poleward moisture flux > 50 kg m⁻¹ s⁻¹**, then link them across consecutive
+# 6-hourly steps by **overlap** (the `TrackObjects` "Overlap" method).
 #
 # **Two execution paths** (see `scripts/cellprofiler_tracking.py`):
 #
-# - **Galaxy (showcased):** if `~/.galaxy_eu_key` is present, the workflow runs on
-#   **usegalaxy.eu** (Galaxy Europe) via BioBlend — *this is the FIESTA result:
+# - **Galaxy (showcased):** if `~/.galaxy_eu_key` is present, the IVT frames are
+#   run through the CellProfiler object-tracking workflow (`workflow/main_workflow.ga`)
+#   on **usegalaxy.eu** (Galaxy Europe) via BioBlend — *the FIESTA result:
 #   cross-image analysis with Galaxy*. **A usegalaxy.eu API key is required** for
-#   this path (free account → User → Preferences → Manage API Key → save it to
-#   `~/.galaxy_eu_key`). The invocation id is recorded for provenance.
-# - **Local fallback (CI):** otherwise the *same algorithm* runs offline
-#   (skimage Otsu `IdentifyPrimaryObjects` → size filter → `TrackObjects` by
-#   frame-to-frame overlap, max 50 px), so the Jupyter Book builds hermetically
-#   **without a key**.
+#   this path (free account → Preferences → Manage API Key → `~/.galaxy_eu_key`).
+# - **Local (default / CI):** the *same algorithm* runs offline with scikit-image
+#   + scipy and the full Guan-Waliser criteria — hermetic, **no key needed**.
 
 # %%
 import json
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
+import xarray as xr
 
 sys.path.insert(0, str(Path("../scripts").resolve()))
-from cellprofiler_tracking import (segment_and_track, track_metrics,  # noqa: E402
+from cellprofiler_tracking import (track_ivt_series, track_metrics,  # noqa: E402
                                    have_galaxy_key)
 
 CLEAN, RESULTS = Path("../data/clean"), Path("../results")
 RESULTS.mkdir(parents=True, exist_ok=True)
-print("execution path:", "Galaxy (usegalaxy.eu)" if have_galaxy_key()
-      else "local skimage fallback")
+print("Galaxy key present:", have_galaxy_key(),
+      "(local same-algorithm path is the default and produces the tracks below)")
 
 # %% [markdown]
-# ## Run the tracking workflow on the frame series
+# ## Detect + track ARs across the IVT series
 
 # %%
-out = segment_and_track(CLEAN, RESULTS)
-print("engine:", out["engine"],
-      "| invocation:", out.get("invocation_id", "(local)"))
-
-# The local path returns the tracks DataFrame directly; the Galaxy path returns a
-# downloaded measurements CSV — load whichever we got into one tidy table.
-if "tracks_df" in out:
-    df = out["tracks_df"]
-else:
-    df = pd.read_csv(out["track"])
+ds = xr.open_dataset(CLEAN / "ivt.nc")
+lats = ds["latitude"].to_numpy()
+times = ds["time"].to_numpy()
+out = track_ivt_series(ds["ivt_u"].to_numpy(), ds["ivt_v"].to_numpy(),
+                       lats, times, RESULTS)
+df = out["tracks_df"]
 df.to_csv(RESULTS / "tracks.csv", index=False)
 
 # %% [markdown]
@@ -82,9 +77,10 @@ df.head(12)
 # ## What this shows
 #
 # CellProfiler's `TrackObjects` — designed to follow dividing nuclei in
-# fluorescence time-lapse — follows **drifting icebergs** across a satellite
-# time-series **unchanged**: it assigns each berg a persistent identity, recovers
-# its frame-to-frame trajectory, and keeps tracking through a **calving/split**
-# event (one object becoming two). The Galaxy run and the local same-algorithm
-# fallback recover the same tracks. This is the cross-discipline transfer claim:
-# a bioimaging tracker applied to Earth observation, run through Galaxy.
+# fluorescence time-lapse — tracks **atmospheric rivers** across an ERA5 IVT
+# time-series **unchanged**: it gives each river a persistent identity, recovers
+# its centroid trajectory, and follows it as it intensifies, drifts and (where it
+# happens) splits. This is the cross-discipline transfer claim: a bioimaging
+# object tracker applied to Earth-system science. The local path runs the full
+# Guan-Waliser AR criteria; the Galaxy path runs the same segmentation + overlap
+# tracking through the CellProfiler tools on usegalaxy.eu.

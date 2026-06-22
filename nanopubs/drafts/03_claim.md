@@ -9,13 +9,13 @@
 ### Short URI suffix as claim ID (text input, required)
 
 ```
-cellprofiler-eo-tracking-transfer
+cellprofiler-ar-tracking-transfer
 ```
 
 ### Label of the claim (text input, required)
 
 ```
-CellProfiler nucleus-tracking pipeline tracks drifting icebergs via Galaxy
+CellProfiler nucleus-tracking pipeline detects and tracks atmospheric rivers via Galaxy
 ```
 
 ### Search for an AIDA sentence (search/select, required)
@@ -38,7 +38,7 @@ See `docs/claim-type-vocabulary.md`.
 - [ ] model performance
 - [ ] statistical significance
 
-*Rationale: the claim describes a recovered pattern (coherent object trajectories, including a split) when a bioimaging tracker is applied cross-discipline. We do not benchmark tracking accuracy against ground-truth iceberg positions, so this is a `descriptive pattern` (feasibility / transfer) claim, not a `model performance` (accuracy) claim — see the Outcome limitations.*
+*Rationale: the claim describes a recovered pattern (coherent atmospheric-river objects and trajectories) when a bioimaging tracker is applied cross-discipline. We do not benchmark detection against a reference AR catalog, so this is a `descriptive pattern` (feasibility / method-transfer) claim, not a `model performance` (accuracy) claim — see the Outcome limitations.*
 
 ### Source URI (text input, optional)
 

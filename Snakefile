@@ -21,7 +21,7 @@ rule all:
         f"{RESULTS}/tracks.csv",
 
 
-# ---------- 01: Data download (NASA GIBS MODIS; synthetic fallback; self-contained) ----------
+# ---------- 01: Data download (ERA5 IVT from ARCO-ERA5, anonymous; self-contained) ----------
 rule data_download:
     output:
         f"{DATA}/raw/sources.json",
@@ -31,7 +31,7 @@ rule data_download:
         f"cd {{NOTEBOOKS}} && jupytext --to notebook --execute 01_data_download.py 2>&1 | tee ../{{log}}"
 
 
-# ---------- 02: Data clean (-> grayscale bright-berg frames) ----------
+# ---------- 02: Data clean (-> IVT magnitude NetCDF + grayscale river frames) ----------
 rule data_clean:
     input:
         f"{DATA}/raw/sources.json",

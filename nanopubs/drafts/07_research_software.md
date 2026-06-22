@@ -2,7 +2,7 @@
 
 > Run the pre-flight checklist in `docs/forrt-form-fields.md` § Pre-flight checklist before drafting.
 >
-> **Scope note:** the reusable artefact here is the **parameterised Galaxy CellProfiler tracking workflow plus its BioBlend driver** (`workflow/main_workflow.ga` + `scripts/cellprofiler_tracking.py`) — others can `git clone` it and point the same tracking workflow at their own image time-series / region. That is a reusable cross-image-analysis tool, not a one-off paper reproduction, so a Research Software nanopub is appropriate. (The upstream CellProfiler software and the GTN tutorial are credited separately at the CiTO step.)
+> **Scope note:** the reusable artefact here is the **parameterised Galaxy CellProfiler tracking workflow plus its BioBlend driver** (`workflow/main_workflow.ga` + `scripts/cellprofiler_tracking.py`) — others can `git clone` it and point the same tracking workflow at their own IVT region/window (or any image time-series). That is a reusable cross-image-analysis tool, not a one-off paper reproduction, so a Research Software nanopub is appropriate. (The upstream CellProfiler software and the GTN tutorial are credited separately at the CiTO step.)
 
 **Form heading:** *"Research Software — Describe research software with metadata including repository, supporting publications, and related resources."*
 
@@ -19,7 +19,7 @@ https://doi.org/10.5281/zenodo.PENDING-FIRST-RELEASE
 ### Software Title (text input, required)
 
 ```
-FIESTA — Galaxy CellProfiler object-tracking workflow for cross-discipline Earth-observation tracking
+FIESTA — Galaxy CellProfiler object-tracking workflow for cross-discipline Earth-system tracking
 ```
 
 ### Repository URL (text input, required)
@@ -44,13 +44,14 @@ https://spdx.org/licenses/MIT.html
 
 ### Related Datasets (repeatable group, optional)
 
-- https://nasa-gibs.github.io/gibs-api-docs/ (MODIS via NASA GIBS)
+- https://cloud.google.com/storage/docs/public-datasets/era5 (ERA5 IVT via ARCO-ERA5)
 
 ### Related Publications (repeatable group, optional)
 
 - `<paste Outcome URI from PUBLISHED.md step 05 after publishing>` (the FORRT Outcome this software implements)
 - https://gxy.io/GTN:T00516 (reused Galaxy training/method)
 - https://doi.org/10.1371/journal.pbio.2005970 (reused CellProfiler software)
+- https://doi.org/10.1002/2015JD024257 (atmospheric-river detection criteria)
 
 ## Publication note
 

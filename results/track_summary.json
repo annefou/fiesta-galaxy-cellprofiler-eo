@@ -1,8 +1,9 @@
 {
-  "n_frames": 8,
-  "n_tracks": 4,
-  "mean_objects_per_frame": 3.12,
-  "longest_track_frames": 8,
-  "max_track_displacement_px": 261.54,
+  "n_frames": 30,
+  "n_ar_tracks": 5,
+  "mean_ars_per_frame": 1.33,
+  "longest_track_frames": 22,
+  "max_length_km": 9559,
+  "max_ivt": 1508,
   "engine": "local:skimage"
 }

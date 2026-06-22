@@ -19,9 +19,15 @@ python = "3.12.*"
 # --- core scientific stack ---
 numpy = "*"
 pandas = ">=2.0"
-scipy = "*"                 # ndimage.label for the local-fallback segmentation
+scipy = "*"                 # ndimage.label for the AR connected-component detection
 matplotlib = "*"
 pyarrow = "*"
+# --- ERA5 IVT access (ARCO-ERA5 analysis-ready Zarr on Google Cloud, anonymous) ---
+xarray = ">=2024.6"
+zarr = "*"
+gcsfs = "*"                 # anonymous read of gs://gcp-public-data-arco-era5
+netcdf4 = "*"               # self-describing IVT intermediates (never .npz — see DOMAIN.md)
+dask = "*"
 # --- notebook execution + Jupyter Book ---
 jupytext = "*"
 jupyterlab = "*"
@@ -29,11 +35,10 @@ nbclient = "*"
 ipykernel = "*"
 # --- pipeline driver ---
 snakemake = "*"
-# --- imaging I/O + local same-algorithm tracking fallback ---
+# --- imaging I/O + local same-algorithm AR detection/tracking ---
 imageio = "*"
-scikit-image = "*"          # threshold_otsu, regionprops, find_boundaries
+scikit-image = ">=0.24"     # regionprops axis_major_length, find_boundaries
 pillow = "*"
-tifffile = "*"
 # --- Galaxy driver (the showcased path) ---
 bioblend = "*"             # invoke the CellProfiler workflow on usegalaxy.eu
 

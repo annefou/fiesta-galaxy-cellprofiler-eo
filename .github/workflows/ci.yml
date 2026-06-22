@@ -59,8 +59,7 @@ jobs:
       - name: Run pipeline
         if: steps.guard.outputs.ready == 'true'
         env:
-          FIESTA_ENGINE: local       # no Galaxy key in CI -> same-algorithm local fallback
-          FIESTA_DATA: synthetic     # deterministic, cloud-free, hermetic (no live GIBS dependency)
+          FIESTA_ENGINE: local       # no Galaxy key in CI -> same-algorithm local AR detection
         run: pixi run snakemake --cores 1 --forceall
 
       - name: Upload results

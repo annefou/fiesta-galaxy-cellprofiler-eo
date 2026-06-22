@@ -15,7 +15,7 @@
       "@id": "./",
       "@type": ["Dataset", "ResearchObject"],
       "name": "fiesta-galaxy-cellprofiler-eo",
-      "description": "Cross-discipline demonstration: the CellProfiler object-tracking pipeline (TrackObjects), built to follow dividing nuclei, run through a Galaxy workflow to track drifting icebergs across a satellite time-series (OSCARS-FIESTA).",
+      "description": "Cross-discipline demonstration: the CellProfiler object-tracking pipeline (TrackObjects), built to follow dividing nuclei, run through a Galaxy workflow to detect and track atmospheric rivers across an ERA5 IVT reanalysis time series (OSCARS-FIESTA).",
       "datePublished": "2026-06-21",
       "license": { "@id": "https://spdx.org/licenses/MIT" },
       "publisher": { "@id": "https://orcid.org/0000-0002-1784-2920" },

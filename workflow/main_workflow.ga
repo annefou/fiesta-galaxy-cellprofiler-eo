@@ -1,6 +1,6 @@
 {
     "a_galaxy_workflow": "true",
-    "annotation": "CellProfiler object-tracking pipeline (GTN 'Object tracking using CellProfiler', gxy.io/GTN:T00516) applied cross-discipline to a satellite time-series of drifting icebergs. Assembles the CellProfiler module chain (Starting Modules -> ColorToGray -> IdentifyPrimaryObjects -> MeasureObjectSizeShape -> MeasureObjectIntensity -> TrackObjects -> OverlayOutlines -> Tile -> SaveImages -> ExportToSpreadsheet) and runs it with the CellProfiler tool on the unzipped frames. NOTE: round-trip through the usegalaxy.eu workflow editor to resolve exact module tool_state schemas before first invocation; module tool versions (3.1.9+galaxy*) must exist on the target server.",
+    "annotation": "CellProfiler object-tracking pipeline (GTN 'Object tracking using CellProfiler', gxy.io/GTN:T00516) applied cross-discipline to a time-series of ERA5 IVT fields to detect and track atmospheric rivers (bright elongated water-vapour-transport filaments). Assembles the CellProfiler module chain (Starting Modules -> ColorToGray -> IdentifyPrimaryObjects -> MeasureObjectSizeShape -> MeasureObjectIntensity -> TrackObjects -> OverlayOutlines -> Tile -> SaveImages -> ExportToSpreadsheet) and runs it with the CellProfiler tool on the unzipped IVT frames. NOTE: round-trip through the usegalaxy.eu workflow editor to resolve exact module tool_state schemas before first invocation; module tool versions (3.1.9+galaxy*) must exist on the target server. Verified 2026-06: imports to usegalaxy.eu, all 13 steps resolve.",
     "comments": [],
     "creator": [
         {
@@ -11,7 +11,7 @@
     ],
     "format-version": "0.1",
     "license": "MIT",
-    "name": "CellProfiler object tracking on EO (drifting icebergs)",
+    "name": "CellProfiler object tracking on EO (atmospheric rivers in ERA5 IVT)",
     "report": {
         "markdown": "\n# Workflow Execution Report\n\n## Inputs\n```galaxy\ninvocation_inputs()\n```\n\n## Outputs\n```galaxy\ninvocation_outputs()\n```\n\n## Workflow\n```galaxy\nworkflow_display()\n```\n"
     },

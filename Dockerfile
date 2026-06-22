@@ -1,7 +1,7 @@
 FROM ghcr.io/prefix-dev/pixi:0.68.1
 
 LABEL org.opencontainers.image.source="https://github.com/annefou/fiesta-galaxy-cellprofiler-eo"
-LABEL org.opencontainers.image.description="Cross-discipline demo: Galaxy CellProfiler object-tracking applied to a satellite time-series of drifting icebergs (OSCARS-FIESTA)"
+LABEL org.opencontainers.image.description="Cross-discipline demo: Galaxy CellProfiler object-tracking applied to atmospheric rivers in ERA5 IVT (OSCARS-FIESTA)"
 LABEL org.opencontainers.image.licenses="MIT"
 
 WORKDIR /app

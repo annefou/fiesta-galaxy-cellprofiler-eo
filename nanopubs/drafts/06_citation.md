@@ -16,7 +16,7 @@ URI of the Outcome published in step 05.
 
 ### List citations (repeatable group, required ≥1)
 
-This is a question-rooted chain with no original paper to confirm/dispute, so the citations credit the reused method and software and cite the data sources.
+This is a question-rooted chain with no original paper to confirm/dispute, so the citations credit the reused method/software and the detection criteria, and cite the data source.
 
 #### Citation 1 — the reused Galaxy training/method
 
@@ -46,7 +46,21 @@ credits
 https://doi.org/10.1371/journal.pbio.2005970
 ```
 
-#### Citation 3 — input data source
+#### Citation 3 — the atmospheric-river detection criteria
+
+##### Citation Type (dropdown)
+
+```
+usesMethodIn
+```
+
+##### DOI or other URL of the cited work (text input)
+
+```
+https://doi.org/10.1002/2015JD024257
+```
+
+#### Citation 4 — input data source
 
 ##### Citation Type (dropdown)
 
@@ -57,7 +71,7 @@ citesAsDataSource
 ##### DOI or other URL of the cited work (text input)
 
 ```
-https://nasa-gibs.github.io/gibs-api-docs/
+https://doi.org/10.1002/qj.3803
 ```
 
 ## Publication note

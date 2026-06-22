@@ -1,9 +1,9 @@
 {
   "engine": "galaxy:usegalaxy.eu",
-  "note": "Template for Galaxy (Galaxy Europe) provenance. The Galaxy path requires a usegalaxy.eu API key at ~/.galaxy_eu_key. After a real run, scripts/cellprofiler_tracking.py records the invocation id(s) and the public history URL here; fill the fields below from results/.galaxy_cache.json and results/track_summary.json. Until then the pipeline runs via the byte-comparable local fallback (engine=local:skimage).",
-  "public_history_url": "https://usegalaxy.eu/u/annefou/h/fiesta-cellprofiler-tracking-on-eo",
+  "note": "Template for Galaxy (Galaxy Europe) provenance. The Galaxy path requires a usegalaxy.eu API key at ~/.galaxy_eu_key. After a real run, scripts/cellprofiler_tracking.py records the invocation id(s) and the public history URL here; fill the fields below from results/.galaxy_cache.json and results/track_summary.json. Until then the pipeline runs via the local same-algorithm path (engine=local:skimage). Verified 2026-06: workflow/main_workflow.ga imports to usegalaxy.eu and all 13 CellProfiler steps resolve to installed tools.",
+  "public_history_url": "https://usegalaxy.eu/u/annefou/h/fiesta-cellprofiler-ar-tracking",
   "workflow": "workflow/main_workflow.ga",
-  "method": "CellProfiler object tracking (Starting Modules -> ColorToGray -> IdentifyPrimaryObjects -> MeasureObjectSizeShape -> MeasureObjectIntensity -> TrackObjects[Overlap, 50px] -> OverlayOutlines -> Tile -> SaveImages -> ExportToSpreadsheet)",
-  "target": "Iceberg A-68A drift past South Georgia, MODIS time-series (NASA GIBS)",
+  "method": "CellProfiler object tracking (Starting Modules -> ColorToGray -> IdentifyPrimaryObjects -> MeasureObjectSizeShape -> MeasureObjectIntensity -> TrackObjects[Overlap] -> OverlayOutlines -> Tile -> SaveImages -> ExportToSpreadsheet)",
+  "target": "Atmospheric rivers in ERA5 IVT (North Pacific, early February 2017), ARCO-ERA5",
   "runs": []
 }

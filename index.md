@@ -1,12 +1,12 @@
 # fiesta-galaxy-cellprofiler-eo
 
-> **Galaxy bioimaging tools, applied cross-discipline to Earth Observation.**
+> **Galaxy bioimaging tools, applied cross-discipline to Earth-system science.**
 >
-> Part of OSCARS-FIESTA. Reuses the GTN tutorial *"Object tracking using CellProfiler"* ([`gxy.io/GTN:T00516`](https://gxy.io/GTN:T00516)) and the CellProfiler software ([Carpenter et al. 2006](https://doi.org/10.1186/gb-2006-7-10-r100)).
+> Part of OSCARS-FIESTA. Reuses the GTN tutorial [`gxy.io/GTN:T00516`](https://gxy.io/GTN:T00516) and CellProfiler ([McQuin et al. 2018](https://doi.org/10.1371/journal.pbio.2005970)).
 
-CellProfiler's `TrackObjects` module — built to follow **dividing nuclei** in fluorescence time-lapse microscopy — is run **unchanged** through a Galaxy workflow on **usegalaxy.eu** (Galaxy Europe) to track **drifting icebergs** across a NASA MODIS satellite time-series (iceberg A-68A past South Georgia, 2020–2021). Bright bergs on a dark ocean are the Earth-observation mirror of bright nuclei on a dark background, and a **calving** berg (one object splitting into two) is the mirror of a dividing nucleus. This repository produces:
+CellProfiler's `TrackObjects` module — built to follow **dividing nuclei** in fluorescence time-lapse microscopy — is run **unchanged** through a Galaxy workflow on **usegalaxy.eu** (Galaxy Europe) to detect and track **atmospheric rivers** across an ERA5 IVT time series (the early-February 2017 North-Pacific sequence). A bright atmospheric-river filament in the IVT field is the climate mirror of a bright nucleus on a dark background, and a river that intensifies, drifts and splits is the mirror of a dividing nucleus. This repository produces:
 
-- A reproducible pipeline (Snakefile + notebooks), runnable on Galaxy or via a same-algorithm local fallback.
+- A reproducible pipeline (Snakefile + notebooks), runnable on Galaxy or via a same-algorithm local fallback — every step (download, IVT computation, detection, tracking, figures) recorded here.
 - A Science Live nanopublication chain documenting the claim, method, and outcome with provenance.
 - A Zenodo-archived release (source + container image) with a citable DOI.
 
@@ -19,25 +19,15 @@ pixi install
 pixi run snakemake --cores 1
 ```
 
-Or with Docker:
-
-```bash
-docker run --rm ghcr.io/annefou/fiesta-galaxy-cellprofiler-eo:latest
-```
-
 ## Two ways to run
 
 - **Galaxy (showcased):** runs `workflow/main_workflow.ga` on **usegalaxy.eu** via BioBlend. **Requires a usegalaxy.eu API key** at `~/.galaxy_eu_key`.
-- **Local fallback (CI / hermetic):** the *same algorithm* offline (skimage Otsu segmentation + frame-to-frame overlap tracking) — no key needed.
+- **Local (default / CI):** the *same algorithm* offline (scikit-image Otsu/threshold + Guan-Waliser AR criteria + overlap tracking) — no key needed.
 
-## Structure
+## Method
 
-- `notebooks/` — jupytext `.py` notebooks that drive the pipeline.
-- `workflow/main_workflow.ga` — the Galaxy CellProfiler tracking workflow.
-- `data/` — downloaded by `notebooks/01_data_download.py`, never committed.
-- `nanopubs/` — drafts of the FORRT chain field-by-field, plus the published-URI registry.
-- `figures/` — curated figures used in the Jupyter Book.
+Atmospheric rivers are detected per timestep with the established criteria (Guan & Waliser 2015; ARTMIP): IVT > 250 kg m⁻¹ s⁻¹, length > 2000 km, length/width > 2, poleward flux > 50 kg m⁻¹ s⁻¹ — i.e. `IdentifyPrimaryObjects` + `MeasureObjectSizeShape` + a geometry filter — then linked across consecutive 6-hourly steps by overlap (`TrackObjects`).
 
 ## Nanopublication chain
 
-The FORRT chain for this work is registered in [`nanopubs/PUBLISHED.md`](nanopubs/PUBLISHED.md) (publish on the Science Live platform and paste URIs there).
+The FORRT chain is drafted in [`nanopubs/drafts/`](nanopubs/drafts/); publish on the Science Live platform and record URIs in [`nanopubs/PUBLISHED.md`](nanopubs/PUBLISHED.md).

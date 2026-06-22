@@ -26,8 +26,9 @@ keywords:
   - nanopublication
   - Science-Live
   - object-tracking
+  - atmospheric-rivers
+  - ERA5
   - earth-observation
-  - icebergs
   - Galaxy
 references:
   - type: software
@@ -44,6 +45,22 @@ references:
         given-names: "Claire"
     year: "2018"
     doi: "10.1371/journal.pbio.2005970"
+  - type: article
+    title: "Detection of atmospheric rivers: Evaluation and application of an algorithm for global studies"
+    authors:
+      - family-names: "Guan"
+        given-names: "Bin"
+      - family-names: "Waliser"
+        given-names: "Duane E."
+    year: "2015"
+    doi: "10.1002/2015JD024257"
+  - type: article
+    title: "The ERA5 global reanalysis"
+    authors:
+      - family-names: "Hersbach"
+        given-names: "Hans"
+    year: "2020"
+    doi: "10.1002/qj.3803"
   - type: url
     title: "Object tracking using CellProfiler — Galaxy Training Network tutorial"
     url: "https://gxy.io/GTN:T00516"

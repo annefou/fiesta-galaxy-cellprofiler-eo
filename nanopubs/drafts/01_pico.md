@@ -9,7 +9,7 @@
 ### Short ID (text input, required)
 
 ```
-cellprofiler-trackobjects-eo-icebergs
+cellprofiler-trackobjects-atmospheric-rivers
 ```
 
 ### Research Question Title (text input, required)
@@ -17,13 +17,13 @@ cellprofiler-trackobjects-eo-icebergs
 10–200 characters.
 
 ```
-Can a bioimaging object-tracking pipeline track drifting icebergs in satellite imagery via Galaxy?
+Can a bioimaging object-tracking pipeline detect and track atmospheric rivers in ERA5 IVT via Galaxy?
 ```
 
 ### Complete Research Question (textarea, required)
 
 ```
-In a time-series of satellite frames showing bright objects drifting on a dark ocean (Population), does the CellProfiler object-tracking pipeline — IdentifyPrimaryObjects plus TrackObjects, built to follow dividing nuclei in fluorescence time-lapse and applied without modification through a Galaxy workflow (Intervention), compared with the same algorithm run locally outside Galaxy (Comparator), recover coherent per-object trajectories across frames, including a calving event in which one object splits into two (Outcome)?
+In a time-series of ERA5 integrated water-vapour transport (IVT) fields containing atmospheric rivers (Population), does the CellProfiler object-tracking pipeline — IdentifyPrimaryObjects plus TrackObjects, built to follow dividing nuclei in fluorescence time-lapse and applied without modification through a Galaxy workflow (Intervention), compared with the same algorithm run locally outside Galaxy (Comparator), recover coherent atmospheric-river objects and their trajectories across consecutive 6-hourly time steps, including rivers that intensify, drift and split (Outcome)?
 ```
 
 ### Question Type (radio button, required)
@@ -37,25 +37,25 @@ In a time-series of satellite frames showing bright objects drifting on a dark o
 ### Population (P) (textarea, required)
 
 ```
-Ordered satellite image frames of a scene containing discrete bright objects on a dark background — here a MODIS (NASA GIBS) time-series of the giant iceberg A-68A drifting past South Georgia (Dec 2020 – Jan 2021), plus a deterministic controlled stand-in time-series of drifting and calving bright "bergs" used for a cloud-free demonstration.
+Gridded fields of integrated water-vapour transport (IVT) from the ERA5 reanalysis (here the North Pacific, early February 2017, 6-hourly, 0.25 degrees), in which atmospheric rivers appear as long narrow filaments of high IVT.
 ```
 
 ### Intervention (I) (textarea, required)
 
 ```
-The CellProfiler object-tracking pipeline (Starting Modules → ColorToGray → IdentifyPrimaryObjects → MeasureObjectSizeShape → MeasureObjectIntensity → TrackObjects [Overlap method, 50 px] → OverlayOutlines → Tile → SaveImages → ExportToSpreadsheet), originally designed to segment and track dividing cell nuclei in fluorescence time-lapse microscopy, applied without modification to the satellite frames through a Galaxy workflow on usegalaxy.eu — a cross-discipline transfer of a bioimaging tracker to Earth observation.
+The CellProfiler object-tracking pipeline (IdentifyPrimaryObjects + MeasureObjectSizeShape + TrackObjects), originally designed to segment and track dividing cell nuclei in fluorescence time-lapse microscopy, applied without modification to the IVT fields through a Galaxy workflow on usegalaxy.eu — a cross-discipline transfer of a bioimaging tracker to Earth-system science. Atmospheric rivers are identified using the established Guan & Waliser (2015) criteria (IVT threshold, length, length/width ratio, poleward flux).
 ```
 
 ### Comparison (C) (textarea, required)
 
 ```
-The same IdentifyPrimaryObjects + TrackObjects algorithm (Otsu segmentation + frame-to-frame overlap tracking) run locally outside Galaxy, used to confirm the Galaxy result and to provide a hermetic, credential-free reproduction.
+The same detection + overlap-tracking algorithm run locally outside Galaxy (scikit-image + scipy), used to confirm the Galaxy result and to provide a hermetic, credential-free reproduction.
 ```
 
 ### Outcome (O) (textarea, required)
 
 ```
-Recovery of coherent per-object tracks across the time-series — a persistent identity, centroid trajectory, area and intensity per object per frame — and whether the tracker follows the objects through a split (one object becoming two), the Earth-observation analogue of a dividing nucleus.
+Recovery of coherent atmospheric-river objects per timestep — each with a persistent identity, centroid trajectory, length, IVT intensity and poleward flux — and whether the tracker follows them across time as they intensify, drift, merge and split.
 ```
 
 ## Publication note

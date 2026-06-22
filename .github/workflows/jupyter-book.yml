@@ -62,8 +62,7 @@ jobs:
       - name: Execute notebooks
         if: steps.guard.outputs.ready == 'true'
         env:
-          FIESTA_ENGINE: local       # hermetic: same-algorithm fallback, no Galaxy key
-          FIESTA_DATA: synthetic     # deterministic, cloud-free, no live GIBS dependency
+          FIESTA_ENGINE: local       # hermetic: same-algorithm AR detection, no Galaxy key
         run: |
           for nb in notebooks/*.ipynb; do
             echo "::group::Executing $nb"
