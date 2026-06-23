@@ -36,4 +36,12 @@ Atmospheric rivers are detected per timestep with the established criteria (Guan
 
 ## Nanopublication chain
 
-The FORRT chain is drafted in [`nanopubs/drafts/`](nanopubs/drafts/); publish on the Science Live platform and record URIs in [`nanopubs/PUBLISHED.md`](nanopubs/PUBLISHED.md).
+The full FORRT chain is **published on Science Live** — a machine-actionable provenance trail for the question, claim, study, and outcome (registry: [`nanopubs/PUBLISHED.md`](nanopubs/PUBLISHED.md)). Open each step in the Science Live viewer:
+
+1. [PICO research question](https://platform.sciencelive4all.org/np/?uri=https://w3id.org/sciencelive/np/RABINnMx1JSQG_DJlcsbCwExgkh8rtU7aBvVIHIRaCaB4) — what is tested
+2. [AIDA sentence](https://platform.sciencelive4all.org/np/?uri=https://w3id.org/sciencelive/np/RAdwLjudptnVRmoBQ0B8bioUYCvDGfyRGDW7fhBvejKzU) — the atomic finding
+3. [FORRT claim](https://platform.sciencelive4all.org/np/?uri=https://w3id.org/sciencelive/np/RAf0RJnRYzvA9zKc7keUMD1OA5T03-TGNDXJqKoajhAik)
+4. [FORRT replication study](https://platform.sciencelive4all.org/np/?uri=https://w3id.org/sciencelive/np/RAMCIV3OiYyQl2edJEQxH6x7_b8-1JB-d8meP6o9pJU5s) — scope and method
+5. [FORRT replication outcome](https://platform.sciencelive4all.org/np/?uri=https://w3id.org/sciencelive/np/RAtYPP0Z0nsACz8KP0sIHBvrnXf8390hliiM-GtrdLgyE) — result and limitations
+6. [CiTO citation](https://platform.sciencelive4all.org/np/?uri=https://w3id.org/sciencelive/np/RAkJzj0lupwfM8Wkcp-yJshknuSQ6SlvG4g6RCtu1jFXo) — relation to the reused tutorial and software
+7. [Research software](https://platform.sciencelive4all.org/np/?uri=https://w3id.org/sciencelive/np/RA190CUpsib-BqOdRCWbcriETwFK4HYTNU1HqnBdwB_IY) — the reusable Galaxy workflow + driver (cites the claim)

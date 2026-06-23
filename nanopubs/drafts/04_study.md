@@ -55,8 +55,8 @@ Relative to the original Galaxy microscopy tutorial, only the input domain chang
 ### Search keywords (Wikidata) (multi-select, optional)
 
 - atmospheric river
-- object tracking
-- water vapor transport
+- tracking system
+- water vapor 
 
 ### Search discipline (Wikidata) (search, optional)
 
