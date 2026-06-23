@@ -5,7 +5,7 @@
   "description": "Cross-discipline demonstration: the CellProfiler object-tracking pipeline (TrackObjects), built to follow dividing nuclei, run through a Galaxy workflow to detect and track atmospheric rivers across an ERA5 IVT reanalysis time series (OSCARS-FIESTA).",
   "version": "0.1.0",
   "dateCreated": "2026-06-21",
-  "dateModified": "2026-06-21",
+  "dateModified": "2026-06-23",
   "license": "https://spdx.org/licenses/MIT",
   "codeRepository": "https://github.com/annefou/fiesta-galaxy-cellprofiler-eo",
   "identifier": "https://doi.org/10.5281/zenodo.PENDING-FIRST-RELEASE",

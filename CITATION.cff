@@ -10,7 +10,7 @@ authors:
 repository-code: "https://github.com/annefou/fiesta-galaxy-cellprofiler-eo"
 license: MIT
 version: "0.1.0"
-date-released: "2026-06-21"
+date-released: "2026-06-23"
 # After your first GitHub release the Zenodo integration mints a concept DOI.
 # Replace the placeholder below once available (run /init-template again or edit
 # by hand), then mirror it into codemeta.json and nanopubs/drafts/07.
