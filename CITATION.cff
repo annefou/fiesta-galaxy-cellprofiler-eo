@@ -11,13 +11,12 @@ repository-code: "https://github.com/annefou/fiesta-galaxy-cellprofiler-eo"
 license: MIT
 version: "0.1.0"
 date-released: "2026-06-23"
-# After your first GitHub release the Zenodo integration mints a concept DOI.
-# Replace the placeholder below once available (run /init-template again or edit
-# by hand), then mirror it into codemeta.json and nanopubs/drafts/07.
-doi: "10.5281/zenodo.PENDING-FIRST-RELEASE"
+# Concept DOI minted by Zenodo on the v0.1.0 release (resolves to the latest
+# version); the v0.1.0 version DOI is 10.5281/zenodo.20811615.
+doi: "10.5281/zenodo.20811614"
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.PENDING-FIRST-RELEASE"
+    value: "10.5281/zenodo.20811614"
     description: "Concept DOI (resolves to the latest version) — minted on first release"
 keywords:
   - replication

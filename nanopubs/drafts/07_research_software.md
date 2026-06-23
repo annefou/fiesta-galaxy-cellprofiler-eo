@@ -13,7 +13,7 @@
 Zenodo concept DOI URL (minted at the v0.1.0 release).
 
 ```
-https://doi.org/10.5281/zenodo.PENDING-FIRST-RELEASE
+https://doi.org/10.5281/zenodo.20811614
 ```
 
 ### Software Title (text input, required)
