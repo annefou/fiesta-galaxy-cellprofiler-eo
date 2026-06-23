@@ -20,11 +20,18 @@
 #
 # 1. A tidy **`data/clean/ivt.nc`** holding the eastward/northward IVT components,
 #    the IVT magnitude, and the latitude axis — consumed by the detection step.
-# 2. A **time-ordered series of single-channel PNG frames** in `data/clean/`,
-#    where each frame renders the IVT magnitude as a bright atmospheric-river
-#    filament on a dark background — the exact input the Galaxy CellProfiler
-#    `TrackObjects` pipeline ingests (the EO/climate mirror of bright nuclei on a
-#    dark background). Frame order is the time axis the tracker links across.
+# 2. A **time-ordered series of RGB PNG frames** in `data/clean/`, where each
+#    frame renders the IVT magnitude as a bright atmospheric-river filament on a
+#    dark background — the exact input the Galaxy CellProfiler `TrackObjects`
+#    pipeline ingests (the EO/climate mirror of bright nuclei on a dark
+#    background). Frame order is the time axis the tracker links across.
+#
+#    The frames are written as **3-channel RGB** (the IVT grayscale replicated
+#    across R/G/B) rather than single-channel, because the ported GTN pipeline
+#    (`gxy.io/GTN:T00516`) keeps the tutorial's `ColorToGray` module: its
+#    NamesAndTypes step declares the input a *Color image*, then converts it to
+#    grayscale exactly as in the tutorial. Replicating the channel keeps our
+#    workflow structurally identical to the training material's module chain.
 
 # %%
 from pathlib import Path
@@ -49,8 +56,9 @@ ds.to_netcdf(CLEAN / "ivt.nc")
 # %%
 mag = ivt.to_numpy()
 for f in range(mag.shape[0]):
-    img = np.clip(mag[f] / IVT_DISPLAY_MAX, 0, 1) * 255
-    Image.fromarray(img.astype("uint8"), mode="L").save(CLEAN / f"frame_{f:03d}.png")
+    img = (np.clip(mag[f] / IVT_DISPLAY_MAX, 0, 1) * 255).astype("uint8")
+    rgb = np.repeat(img[:, :, None], 3, axis=2)  # grayscale -> 3-channel RGB (ColorToGray input)
+    Image.fromarray(rgb, mode="RGB").save(CLEAN / f"frame_{f:03d}.png")
 
 print(f"wrote data/clean/ivt.nc + {mag.shape[0]} frames")
 print(f"IVT magnitude range: {float(mag.min()):.0f} – {float(mag.max()):.0f} kg m^-1 s^-1")

@@ -1,119 +1,84 @@
-# Finalizing the Galaxy CellProfiler run (GUI round-trip)
+# The Galaxy CellProfiler run — how the workflow was assembled
 
-This is the one step that cannot be done over the API: turning the imported
-workflow into a CellProfiler pipeline that the **monolithic `Run CellProfiler
-pipeline` tool** executes end-to-end on **usegalaxy.eu**. Everything else (data
-download, IVT computation, detection, tracking, figures, CI, Jupyter Book) is
-already automated and green; the local same-algorithm path produces the
-quantitative result. This guide makes the *showcased Galaxy run* green too.
+**Status: green end-to-end.** `workflow/main_workflow.ga` runs the full
+CellProfiler module chain on **usegalaxy.eu**, including the final monolithic
+*Run CellProfiler pipeline* runner, with **all 13 steps `ok`**. Public history:
+<https://usegalaxy.eu/histories/view?id=11ac94870d0bb33ad591597e3e548295>
+(verified 2026-06-23, invocation `7b22ed04769eee9e`). The run produces
+`TrackObjects` measurement tables + tracked PNGs. The byte-comparable local
+same-algorithm path remains the CI/hermetic quantitative result.
 
-## Why a GUI round-trip is needed
+## How the workflow was built — start from the tutorial's own `.ga`
 
-`workflow/main_workflow.ga` imports onto usegalaxy.eu and all 13 tools resolve;
-the per-module builder steps run green and the data flows through. But the final
-`Run CellProfiler pipeline` step fails, because the hand-authored per-module
-`tool_state` doesn't fully survive Galaxy's tool-state correction. Verified
-defects in the assembled pipeline (history checked 2026-06):
+The GTN tutorial this repo ports — *Object tracking using CellProfiler*
+(`gxy.io/GTN:T00516`) — defines the canonical Galaxy method: *"A pipeline is
+built by chaining together Galaxy tools representing CellProfiler modules and
+must start with the Starting modules tool and end with the CellProfiler tool."*
+So the workflow is the tutorial's module chain, not a single `.cppipe`.
 
-1. **NamesAndTypes → "Process as 3D? = Yes"** — our IVT frames are 2D, so the
-   pipeline must be set to 2D.
-2. **`ColorToGray` is in the chain, but the IVT frames are single-channel
-   grayscale** (`notebooks/02_data_clean.py` writes mode-`L` PNGs). ColorToGray
-   expects a colour image and errors / is meaningless here — it should be
-   **removed**.
-3. **IdentifyPrimaryObjects** came back with **blank** input-image and
-   object-name fields (the real tool uses `input_from_nat` /
-   `name_to_be_identified` under a `con_advanced` conditional, not the keys the
-   hand-authored state used), and a nucleus-sized diameter (10–40 px) rather
-   than something appropriate for large AR filaments.
+The decisive move was to **base our `.ga` on the tutorial's own exported
+workflow** rather than hand-author the per-module `tool_state`. The tutorial ships
+[`main_workflow.ga`](https://raw.githubusercontent.com/galaxyproject/training-material/main/topics/imaging/tutorials/object-tracking-using-cell-profiler/workflows/main_workflow.ga)
+(`CP_object_tracking_example`, 13 steps). Its module versions are identical to
+ours, and — because it was exported from a real Galaxy instance — every module's
+`tool_state` is already valid (it is already 2D, and every conditional field is
+populated). We took that file verbatim and applied a **minimal retarget** for our
+atmospheric-river data:
 
-CellProfiler modules have deeply nested conditional parameters; the Galaxy
-**editor** renders each module's real form (and knows the image is grayscale),
-which is why finalizing there is the standard, robust practice.
+| Change | From → To | Why |
+|---|---|---|
+| Workflow name/annotation | tutorial → AR/EO description | provenance |
+| Object name (steps 4–7) | `Nuclei` → `Rivers` | scientific clarity |
+| TrackObjects output image | `TrackedCells` → `TrackedRivers` | scientific clarity |
+| NamesAndTypes filename rule | `GFPHistone` → `frame` | match our `frame_NNN.png` |
+| Metadata regex | 3-field → `(?P<field1>frame)_(?P<field2>[0-9]+)` | our naming |
+| Input label | → `Image time-series (zip)` | match the BioBlend driver |
 
----
+Everything else is inherited verbatim: **2D** (`process_3d: No`), **ColorToGray**
+(`OrigColor` → `OrigGray`), every other module's `tool_state`, and the real
+`uuid4` step ids (placeholder UUIDs would 400 on import).
 
-## Recommended: switch to a single `.cppipe` (Option A1)
+### One supporting change in the data writer
 
-Instead of the fragile 11-module builder chain, run **one** CellProfiler pipeline
-file. This is the most robust Galaxy-native route.
+The inherited NamesAndTypes declares the input a **Color image**, and the
+tutorial's ColorToGray converts it to grayscale. So `notebooks/02_data_clean.py`
+writes the IVT frames as **3-channel RGB** (the grayscale replicated across
+R/G/B) rather than single-channel. This keeps the workflow structurally identical
+to the training material's chain (ColorToGray stays) while feeding it valid
+input. The local path is unaffected — it reads `data/clean/ivt.nc`, not the PNGs.
 
-### 1. Build the pipeline once in CellProfiler
+## Reproducing the run
 
-Use **CellProfiler Desktop** (free, cellprofiler.org) — or adapt the GTN
-tutorial pipeline (`gxy.io/GTN:T00516`). Build this module sequence for **2D
-grayscale** frames (no ColorToGray):
+1. Regenerate the RGB frames: `cd notebooks && python 02_data_clean.py`
+   (needs `data/raw/ivt_era5.nc` from `01_data_download.py`).
+2. Drive it with `scripts/cellprofiler_tracking.py` (`run_on_galaxy`), which zips
+   `data/clean/frame_*.png`, uploads, imports `workflow/main_workflow.ga`, and
+   invokes by input name `Image time-series (zip)`. A usegalaxy.eu API key at
+   `~/.galaxy_eu_key` is required.
+3. Invoke with `allow_tool_state_corrections=True` and
+   `require_exact_tool_versions=False` so Galaxy resolves the tutorial's tool
+   versions to whatever is installed on usegalaxy.eu.
 
-| Module | Key settings for our IVT frames |
-|---|---|
-| Images | (default) |
-| Metadata | Extract from file name; regex captures the frame index, e.g. `frame_(?P<Index>[0-9]+)` |
-| NamesAndTypes | **Process as 3D? → No**; assign **all images** the grayscale name `IVT` |
-| Groups | No grouping (the whole series is one movie) |
-| IdentifyPrimaryObjects | Input image `IVT`; objects `Rivers`; **typical diameter ~10–400 px** (AR filaments are large); Global **Otsu, three classes**; discard border objects = No |
-| MeasureObjectSizeShape | objects `Rivers` |
-| MeasureObjectIntensity | image `IVT`, objects `Rivers` |
-| **TrackObjects** | Method **Overlap**; object `Rivers`; **maximum distance ~50 px**; save colour-coded image `TrackedRivers` |
-| OverlayOutlines | on `IVT`, outline `Rivers` |
-| SaveImages | save `TrackedRivers` (and/or the outline image) as PNG |
-| ExportToSpreadsheet | export per-object measurements (includes the `TrackObjects` columns: label, displacement, lifetime) |
+## Appendix — why the earlier hand-authored `.ga` failed
 
-Save as `cellprofiler_pipeline.cppipe`. Validate it runs locally on a couple of
-the frames from `data/clean/` first.
+The previous `workflow/main_workflow.ga` was hand-authored, and its per-module
+`tool_state` did not survive Galaxy's tool-state correction. The assembled
+pipeline had three defects, all of which the GTN-derived file avoids by
+construction:
 
-> Tip: regenerate the frames any time with
-> `pixi run python -c "import jupytext"` … or just
-> `cd notebooks && jupytext --to notebook --execute 01_data_download.py 02_data_clean.py`
-> → `data/clean/frame_*.png`.
+1. NamesAndTypes was set to **Process as 3D? = Yes** (frames are 2D).
+2. ColorToGray was fed single-channel grayscale (mode-`L`) input.
+3. IdentifyPrimaryObjects came back with **blank** input-image/object-name fields
+   (the real tool uses `input_from_nat` / `name_to_be_identified` under a
+   `con_advanced` conditional) and a nucleus-sized diameter.
 
-### 2. Run it on usegalaxy.eu
+Lesson: for CellProfiler-in-Galaxy, start from a Galaxy-exported workflow (the
+tutorial's, or one extracted from a successful history) and retarget data-specific
+fields — don't hand-write the deeply-nested module `tool_state`.
 
-1. **Upload** to a new history: (a) a **zip** of `data/clean/frame_*.png`, and
-   (b) the `cellprofiler_pipeline.cppipe`.
-2. Run **Unzip** on the frames zip (`imgteam/unzip`) → gives an image collection.
-3. Run **Run CellProfiler pipeline** (`bgruening/cp_cellprofiler`):
-   - *Pipeline file* → your `.cppipe`
-   - *Are the input images packed into a tar archive?* → **No**
-   - *Images* → the unzipped image collection (select the dataset collection)
-4. Run. The measurements CSV + tracked PNGs appear in the history.
+## After the run
 
-### 3. Capture it back into the repo
-
-- **Extract Workflow** from the finished history (History options → *Extract
-  Workflow*), then **Download** it as `.ga` and overwrite
-  `workflow/main_workflow.ga`. Commit `cellprofiler_pipeline.cppipe` alongside it.
-- Make the history **shareable** (History options → *Share or Publish*) and paste
-  its URL into `results/galaxy_provenance.json` together with the workflow
-  invocation id. The BioBlend driver (`scripts/cellprofiler_tracking.py
-  → run_on_galaxy`) already uploads a frames zip and invokes the workflow, so
-  with the corrected `.ga` it will run end-to-end when `~/.galaxy_eu_key` is set.
-
----
-
-## Alternative: fix the existing module-chain workflow in the editor (Option A2)
-
-If you'd rather keep the 11-module builder chain:
-
-1. **Workflows → (the imported workflow) → Edit**.
-2. **Delete the `ColorToGray` node** and connect `Starting Modules` → directly
-   into `IdentifyPrimaryObjects` (the input is already grayscale).
-3. Open **`Starting Modules`** → NamesAndTypes section → set **Process as 3D? =
-   No**, image type **Grayscale**, name e.g. `IVT`.
-4. Open **`IdentifyPrimaryObjects`** → set input image `IVT`, objects `Rivers`,
-   diameter ~10–400, Global Otsu three classes.
-5. Check **`TrackObjects`** (object `Rivers`, Overlap, ~50 px), **`OverlayOutlines`**,
-   **`SaveImages`**, **`ExportToSpreadsheet`** all reference `Rivers` / the right
-   image names.
-6. Open **`Run CellProfiler pipeline`** → *tar archive?* **No**, and connect the
-   **Unzip** image collection to *Images*.
-7. **Save**, run once from a history to confirm green, then **Download** the `.ga`
-   over `workflow/main_workflow.ga` and commit.
-
----
-
-## After either option
-
-- Update `nanopubs/drafts/05_outcome.md` to add the Galaxy invocation id + public
-  history URL to the evidence (the conclusion already holds; this upgrades the
-  Galaxy path from "imports + tools resolve" to "runs end-to-end").
-- The local same-algorithm path remains the CI/hermetic result and cross-check.
+- `results/galaxy_provenance.json` records the public history URL, invocation id,
+  and output counts.
+- `nanopubs/drafts/05_outcome.md` cites the end-to-end Galaxy run as evidence
+  (the quantitative AR conclusion still rests on the local same-algorithm path).

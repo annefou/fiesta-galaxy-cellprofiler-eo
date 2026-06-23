@@ -1,9 +1,27 @@
 {
   "engine": "galaxy:usegalaxy.eu",
-  "note": "Template for Galaxy (Galaxy Europe) provenance. The Galaxy path requires a usegalaxy.eu API key at ~/.galaxy_eu_key. After a real run, scripts/cellprofiler_tracking.py records the invocation id(s) and the public history URL here; fill the fields below from results/.galaxy_cache.json and results/track_summary.json. Until then the pipeline runs via the local same-algorithm path (engine=local:skimage). Verified 2026-06: workflow/main_workflow.ga imports to usegalaxy.eu and all 13 CellProfiler steps resolve to installed tools.",
-  "public_history_url": "https://usegalaxy.eu/u/annefou/h/fiesta-cellprofiler-ar-tracking",
+  "note": "Live Galaxy (Galaxy Europe) provenance for the CellProfiler atmospheric-river tracking run. The workflow/main_workflow.ga was rebuilt from the GTN tutorial's own workflow (gxy.io/GTN:T00516, 'CP_object_tracking_example') and retargeted to ERA5 IVT frames (objects: Rivers). Verified 2026-06-23: the workflow imports to usegalaxy.eu and runs END-TO-END with all 13 steps green, including the final 'Run CellProfiler pipeline' runner. It produces TrackObjects measurements (per-object tracking columns) and tracked PNGs. The quantitative atmospheric-river characterisation (Guan-Waliser criteria) is the byte-comparable local same-algorithm path; the Galaxy run uses the tutorial's default CellProfiler parameters and demonstrates that the bioimaging tracking method executes in the Galaxy environment on Earth-system data.",
+  "public_history_url": "https://usegalaxy.eu/histories/view?id=11ac94870d0bb33ad591597e3e548295",
   "workflow": "workflow/main_workflow.ga",
   "method": "CellProfiler object tracking (Starting Modules -> ColorToGray -> IdentifyPrimaryObjects -> MeasureObjectSizeShape -> MeasureObjectIntensity -> TrackObjects[Overlap] -> OverlayOutlines -> Tile -> SaveImages -> ExportToSpreadsheet)",
   "target": "Atmospheric rivers in ERA5 IVT (North Pacific, early February 2017), ARCO-ERA5",
-  "runs": []
+  "runs": [
+    {
+      "date": "2026-06-23",
+      "history_id": "11ac94870d0bb33ad591597e3e548295",
+      "history_url": "https://usegalaxy.eu/histories/view?id=11ac94870d0bb33ad591597e3e548295",
+      "workflow_id": "2c7cbd8a7d849b0c",
+      "invocation_id": "7b22ed04769eee9e",
+      "frames": 40,
+      "frame_format": "RGB PNG",
+      "all_13_steps": "ok",
+      "runner_state": "ok",
+      "outputs": {
+        "measurement_tables": 3,
+        "tracked_pngs": 80,
+        "object_instances_tracked": 93,
+        "track_objects_columns": 11
+      }
+    }
+  ]
 }
