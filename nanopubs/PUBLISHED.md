@@ -6,8 +6,8 @@ This file is the canonical registry of published nanopub URIs for this work. The
 
 | Step | Template | URI | Published |
 |---|---|---|---|
-| 01 | PICO Research Question | _(draft: `drafts/01_pico.md`)_ | ⬜ pending |
-| 02 | AIDA Sentence | _(draft: `drafts/02_aida.md`)_ | ⬜ pending |
+| 01 | PICO Research Question | https://w3id.org/sciencelive/np/RABINnMx1JSQG_DJlcsbCwExgkh8rtU7aBvVIHIRaCaB4 | Done |
+| 02 | AIDA Sentence | https://w3id.org/sciencelive/np/RAdwLjudptnVRmoBQ0B8bioUYCvDGfyRGDW7fhBvejKzU | Done |
 | 03 | FORRT Claim | _(draft: `drafts/03_claim.md`)_ | ⬜ pending |
 | 04 | FORRT Replication Study | _(draft: `drafts/04_study.md`)_ | ⬜ pending |
 | 05 | FORRT Replication Outcome | _(draft: `drafts/05_outcome.md`)_ | ⬜ pending |

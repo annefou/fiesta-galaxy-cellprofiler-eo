@@ -17,7 +17,7 @@ The CellProfiler object-tracking pipeline, built to follow dividing nuclei and a
 ### Select related topics/tags (dropdown, optional)
 
 ```
-object tracking; atmospheric rivers; reanalysis
+tracking system; atmospheric rivers; 
 ```
 
 ### Relates to this nanopublication (text input, required)
