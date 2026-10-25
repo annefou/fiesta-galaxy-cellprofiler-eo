@@ -1,156 +1,481 @@
 {
-  "@context": "https://w3id.org/ro/crate/1.2/context",
-  "@graph": [
-    {
-      "@type": "CreativeWork",
-      "@id": "ro-crate-metadata.json",
-      "conformsTo": [
-        { "@id": "https://w3id.org/ro/crate/1.2" },
-        { "@id": "https://w3id.org/ro/wfrun/process/0.5" },
-        { "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0" }
-      ],
-      "about": { "@id": "./" }
-    },
-    {
-      "@id": "./",
-      "@type": ["Dataset", "ResearchObject"],
-      "name": "fiesta-galaxy-cellprofiler-eo",
-      "description": "Cross-discipline demonstration: the CellProfiler object-tracking pipeline (TrackObjects), built to follow dividing nuclei, run through a Galaxy workflow to detect and track atmospheric rivers across an ERA5 IVT reanalysis time series (OSCARS-FIESTA).",
-      "datePublished": "2026-06-21",
-      "license": { "@id": "https://spdx.org/licenses/MIT" },
-      "publisher": { "@id": "https://orcid.org/0000-0002-1784-2920" },
-      "author": [{ "@id": "https://orcid.org/0000-0002-1784-2920" }],
-      "mainEntity": { "@id": "workflow/main_workflow.ga" },
-      "hasPart": [
-        { "@id": "Snakefile" },
-        { "@id": "workflow/main_workflow.ga" },
-        { "@id": "pixi.toml" },
-        { "@id": "pixi.lock" },
-        { "@id": "Dockerfile" },
-        { "@id": "notebooks/01_data_download.py" },
-        { "@id": "notebooks/02_data_clean.py" },
-        { "@id": "notebooks/03_analysis.py" },
-        { "@id": "notebooks/04_figures.py" },
-        { "@id": "scripts/cellprofiler_tracking.py" },
-        { "@id": "data/" },
-        { "@id": "results/" },
-        { "@id": "figures/" },
-        { "@id": "nanopubs/PUBLISHED.md" }
-      ],
-      "citation": [
-        { "@id": "https://doi.org/10.1371/journal.pbio.2005970" }
-      ]
-    },
-    {
-      "@id": "https://orcid.org/0000-0002-1784-2920",
-      "@type": "Person",
-      "name": "Anne Fouilloux",
-      "affiliation": "Lifewatch ERIC"
-    },
-    {
-      "@id": "workflow/main_workflow.ga",
-      "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
-      "name": "Galaxy CellProfiler object-tracking workflow",
-      "description": "Galaxy workflow assembling the CellProfiler module chain (ColorToGray, IdentifyPrimaryObjects, MeasureObject*, TrackObjects, OverlayOutlines, Tile, SaveImages, ExportToSpreadsheet) and running it on a time-series of frames. Executed on usegalaxy.eu.",
-      "programmingLanguage": { "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy" },
-      "input": [{ "@id": "data/" }],
-      "output": [{ "@id": "results/" }]
-    },
-    {
-      "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy",
-      "@type": "ComputerLanguage",
-      "name": "Galaxy",
-      "url": "https://galaxyproject.org/"
-    },
-    {
-      "@id": "Snakefile",
-      "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
-      "name": "Replication pipeline",
-      "description": "Snakemake workflow orchestrating data download, cleaning, tracking analysis, and figure generation.",
-      "programmingLanguage": { "@id": "https://w3id.org/workflowhub/workflow-ro-crate#snakemake" },
-      "input": [{ "@id": "pixi.toml" }, { "@id": "pixi.lock" }],
-      "output": [{ "@id": "results/" }, { "@id": "figures/" }, { "@id": "nanopubs/PUBLISHED.md" }]
-    },
-    {
-      "@id": "https://w3id.org/workflowhub/workflow-ro-crate#snakemake",
-      "@type": "ComputerLanguage",
-      "name": "Snakemake",
-      "url": "https://snakemake.readthedocs.io/"
-    },
-    {
-      "@id": "pixi.toml",
-      "@type": ["File", "ConfigurationFile"],
-      "name": "Pixi workspace manifest (declared dependencies, features, tasks)",
-      "encodingFormat": "application/toml"
-    },
-    {
-      "@id": "pixi.lock",
-      "@type": ["File", "ConfigurationFile"],
-      "name": "Pixi per-platform lockfile (every package pinned to an exact build hash)",
-      "encodingFormat": "application/yaml"
-    },
-    {
-      "@id": "Dockerfile",
-      "@type": ["File", "ConfigurationFile"],
-      "name": "Container build specification",
-      "encodingFormat": "text/x-dockerfile"
-    },
-    {
-      "@id": "scripts/cellprofiler_tracking.py",
-      "@type": ["File", "SoftwareSourceCode"],
-      "name": "Two-path tracking driver (Galaxy via BioBlend, or local same-algorithm fallback)",
-      "programmingLanguage": "Python"
-    },
-    {
-      "@id": "notebooks/01_data_download.py",
-      "@type": ["File", "SoftwareSourceCode", "Notebook"],
-      "name": "01 — Data download",
-      "programmingLanguage": "Python"
-    },
-    {
-      "@id": "notebooks/02_data_clean.py",
-      "@type": ["File", "SoftwareSourceCode", "Notebook"],
-      "name": "02 — Data clean",
-      "programmingLanguage": "Python"
-    },
-    {
-      "@id": "notebooks/03_analysis.py",
-      "@type": ["File", "SoftwareSourceCode", "Notebook"],
-      "name": "03 — Tracking analysis",
-      "programmingLanguage": "Python"
-    },
-    {
-      "@id": "notebooks/04_figures.py",
-      "@type": ["File", "SoftwareSourceCode", "Notebook"],
-      "name": "04 — Figures",
-      "programmingLanguage": "Python"
-    },
-    {
-      "@id": "data/",
-      "@type": "Dataset",
-      "name": "Downloaded input data (gitignored; populated by 01_data_download.py)"
-    },
-    {
-      "@id": "results/",
-      "@type": "Dataset",
-      "name": "Analysis output artefacts (tracks.csv, track_summary.json, galaxy_provenance.json)"
-    },
-    {
-      "@id": "figures/",
-      "@type": "Dataset",
-      "name": "Curated figures used in the Jupyter Book"
-    },
-    {
-      "@id": "nanopubs/PUBLISHED.md",
-      "@type": ["File", "TextObject"],
-      "name": "Registry of published FORRT nanopub URIs",
-      "description": "URIs of the published PICO / AIDA / FORRT Claim / Replication Study / Replication Outcome / CiTO Citation steps."
-    },
-    {
-      "@id": "https://doi.org/10.1371/journal.pbio.2005970",
-      "@type": "ScholarlyArticle",
-      "name": "CellProfiler 3.0: Next-generation image processing for biology",
-      "datePublished": "2018"
-    }
-  ]
+    "@context": "https://w3id.org/ro/crate/1.2/context",
+    "@graph": [
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "author": {
+                "@id": "https://orcid.org/0000-0002-1784-2920"
+            },
+            "citation": [
+                {
+                    "@id": "https://doi.org/10.1186/gb-2006-7-10-r100"
+                },
+                {
+                    "@id": "https://doi.org/10.1371/journal.pbio.2005970"
+                },
+                {
+                    "@id": "https://doi.org/10.1002/2015JD024257"
+                },
+                {
+                    "@id": "https://doi.org/10.1002/qj.3803"
+                },
+                {
+                    "@id": "https://gxy.io/GTN:T00182"
+                }
+            ],
+            "codeRepository": "https://github.com/annefou/fiesta-galaxy-cellprofiler-eo",
+            "conformsTo": [
+                {
+                    "@id": "https://w3id.org/np/RAQXwdUrfZ40k2MdeDv9fokzyh35UKuN3w17G2yO4Wm8A"
+                }
+            ],
+            "contentLocation": {
+                "@id": "#study-area"
+            },
+            "datePublished": "2026-06-23",
+            "description": "Cross-discipline demonstration: the CellProfiler object-tracking pipeline (TrackObjects), built to follow dividing nuclei, run through a Galaxy workflow to detect and track atmospheric rivers across an ERA5 IVT reanalysis time series (OSCARS-FIESTA).",
+            "funder": {
+                "@id": "https://ror.org/00k4n6c32"
+            },
+            "funding": {
+                "@id": "https://cordis.europa.eu/project/id/101129751"
+            },
+            "hasPart": [
+                {
+                    "@id": "Snakefile"
+                },
+                {
+                    "@id": "workflow/main_workflow.ga"
+                },
+                {
+                    "@id": "notebooks/01_data_download.py"
+                },
+                {
+                    "@id": "notebooks/02_data_clean.py"
+                },
+                {
+                    "@id": "notebooks/03_analysis.py"
+                },
+                {
+                    "@id": "notebooks/04_figures.py"
+                },
+                {
+                    "@id": "pixi.toml"
+                },
+                {
+                    "@id": "Dockerfile"
+                },
+                {
+                    "@id": "results/galaxy_provenance.json"
+                },
+                {
+                    "@id": "results/track_summary.json"
+                },
+                {
+                    "@id": "results/galaxy_measurements.csv"
+                },
+                {
+                    "@id": "figures/main_result.png"
+                },
+                {
+                    "@id": "figures/galaxy_tracking.png"
+                },
+                {
+                    "@id": "figures/robustness.png"
+                },
+                {
+                    "@id": "https://doi.org/10.5281/zenodo.20813832"
+                },
+                {
+                    "@id": "https://cloud.google.com/storage/docs/public-datasets/era5"
+                },
+                {
+                    "@id": "https://doi.org/10.5281/zenodo.20811614"
+                }
+            ],
+            "identifier": {
+                "@id": "#version-doi"
+            },
+            "keywords": [
+                "replication",
+                "reproducibility",
+                "FORRT",
+                "nanopublication",
+                "Science-Live",
+                "object-tracking",
+                "atmospheric-rivers",
+                "ERA5",
+                "earth-observation",
+                "Galaxy"
+            ],
+            "license": {
+                "@id": "https://spdx.org/licenses/MIT"
+            },
+            "mainEntity": {
+                "@id": "workflow/main_workflow.ga"
+            },
+            "name": "A bioimaging object tracker applied to Earth-system science: CellProfiler tracks atmospheric rivers in ERA5 (OSCARS-FIESTA)",
+            "publisher": {
+                "@id": "https://ror.org/02a8eka68"
+            },
+            "sameAs": {
+                "@id": "https://doi.org/10.5281/zenodo.20811614"
+            },
+            "subjectOf": [
+                {
+                    "@id": "https://w3id.org/sciencelive/np/RABINnMx1JSQG_DJlcsbCwExgkh8rtU7aBvVIHIRaCaB4"
+                },
+                {
+                    "@id": "https://w3id.org/sciencelive/np/RAdwLjudptnVRmoBQ0B8bioUYCvDGfyRGDW7fhBvejKzU"
+                },
+                {
+                    "@id": "https://w3id.org/sciencelive/np/RAf0RJnRYzvA9zKc7keUMD1OA5T03-TGNDXJqKoajhAik"
+                },
+                {
+                    "@id": "https://w3id.org/sciencelive/np/RAMCIV3OiYyQl2edJEQxH6x7_b8-1JB-d8meP6o9pJU5s"
+                },
+                {
+                    "@id": "https://w3id.org/sciencelive/np/RAtYPP0Z0nsACz8KP0sIHBvrnXf8390hliiM-GtrdLgyE"
+                },
+                {
+                    "@id": "https://w3id.org/sciencelive/np/RAkJzj0lupwfM8Wkcp-yJshknuSQ6SlvG4g6RCtu1jFXo"
+                }
+            ],
+            "version": "0.1.0"
+        },
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            },
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.2"
+            }
+        },
+        {
+            "@id": "https://w3id.org/workflowhub/workflow-ro-crate#snakemake",
+            "@type": "ComputerLanguage",
+            "name": "Snakemake",
+            "url": {
+                "@id": "https://snakemake.readthedocs.io/"
+            },
+            "version": "9.23.1"
+        },
+        {
+            "@id": "Snakefile",
+            "@type": [
+                "File",
+                "SoftwareSourceCode",
+                "ComputationalWorkflow"
+            ],
+            "contentSize": "1824",
+            "description": "Replication pipeline (Snakemake): download, clean, analyse, figures.",
+            "encodingFormat": "text/x-snakemake",
+            "name": "Snakefile",
+            "programmingLanguage": {
+                "@id": "https://w3id.org/workflowhub/workflow-ro-crate#snakemake"
+            }
+        },
+        {
+            "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy",
+            "@type": "ComputerLanguage",
+            "name": "Galaxy",
+            "url": {
+                "@id": "https://galaxyproject.org/"
+            },
+            "version": "26.1"
+        },
+        {
+            "@id": "workflow/main_workflow.ga",
+            "@type": [
+                "File",
+                "SoftwareSourceCode",
+                "ComputationalWorkflow"
+            ],
+            "contentSize": "31021",
+            "description": "Galaxy workflow: CellProfiler object tracking applied unchanged to ERA5 IVT frames.",
+            "encodingFormat": "application/json",
+            "name": "workflow/main_workflow.ga",
+            "programmingLanguage": {
+                "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy"
+            }
+        },
+        {
+            "@id": "notebooks/01_data_download.py",
+            "@type": "File",
+            "contentSize": "4008",
+            "description": "Notebook 01_data_download (jupytext)",
+            "encodingFormat": "text/x-python",
+            "name": "notebooks/01_data_download.py"
+        },
+        {
+            "@id": "notebooks/02_data_clean.py",
+            "@type": "File",
+            "contentSize": "2388",
+            "description": "Notebook 02_data_clean (jupytext)",
+            "encodingFormat": "text/x-python",
+            "name": "notebooks/02_data_clean.py"
+        },
+        {
+            "@id": "notebooks/03_analysis.py",
+            "@type": "File",
+            "contentSize": "3264",
+            "description": "Notebook 03_analysis (jupytext)",
+            "encodingFormat": "text/x-python",
+            "name": "notebooks/03_analysis.py"
+        },
+        {
+            "@id": "notebooks/04_figures.py",
+            "@type": "File",
+            "contentSize": "4814",
+            "description": "Notebook 04_figures (jupytext)",
+            "encodingFormat": "text/x-python",
+            "name": "notebooks/04_figures.py"
+        },
+        {
+            "@id": "pixi.toml",
+            "@type": "File",
+            "contentSize": "2060",
+            "description": "Pixi manifest: declared dependencies",
+            "encodingFormat": "application/toml",
+            "name": "pixi.toml"
+        },
+        {
+            "@id": "Dockerfile",
+            "@type": "File",
+            "contentSize": "876",
+            "description": "Container build specification",
+            "encodingFormat": "text/plain",
+            "name": "Dockerfile"
+        },
+        {
+            "@id": "results/galaxy_provenance.json",
+            "@type": "File",
+            "contentSize": "1920",
+            "description": "Result galaxy_provenance",
+            "encodingFormat": "application/json",
+            "name": "results/galaxy_provenance.json"
+        },
+        {
+            "@id": "results/track_summary.json",
+            "@type": "File",
+            "contentSize": "173",
+            "description": "Result track_summary",
+            "encodingFormat": "application/json",
+            "name": "results/track_summary.json"
+        },
+        {
+            "@id": "results/galaxy_measurements.csv",
+            "@type": "File",
+            "contentSize": "76731",
+            "description": "Result table galaxy_measurements",
+            "encodingFormat": "text/csv",
+            "name": "results/galaxy_measurements.csv"
+        },
+        {
+            "@id": "figures/main_result.png",
+            "@type": "File",
+            "contentSize": "390512",
+            "description": "Main figure",
+            "encodingFormat": "image/png",
+            "name": "figures/main_result.png"
+        },
+        {
+            "@id": "figures/galaxy_tracking.png",
+            "@type": "File",
+            "contentSize": "247425",
+            "description": "Galaxy tracking output",
+            "encodingFormat": "image/png",
+            "name": "figures/galaxy_tracking.png"
+        },
+        {
+            "@id": "figures/robustness.png",
+            "@type": "File",
+            "contentSize": "93435",
+            "description": "Robustness",
+            "encodingFormat": "image/png",
+            "name": "figures/robustness.png"
+        },
+        {
+            "@id": "https://doi.org/10.5281/zenodo.20813832",
+            "@type": "File",
+            "description": "Atmospheric-river IVT frames (North Pacific, Feb 2017), derived from ERA5",
+            "encodingFormat": "text/html",
+            "license": {
+                "@id": "https://creativecommons.org/licenses/by/4.0/"
+            },
+            "name": "Atmospheric-river IVT frames (North Pacific, Feb 2017), derived from ERA5",
+            "sdDatePublished": "2026-10-24"
+        },
+        {
+            "@id": "https://cloud.google.com/storage/docs/public-datasets/era5",
+            "@type": "File",
+            "description": "ERA5 reanalysis (ARCO-ERA5, Google Cloud public dataset)",
+            "encodingFormat": "text/html",
+            "name": "ERA5 reanalysis (ARCO-ERA5, Google Cloud public dataset)",
+            "sdDatePublished": "2026-10-24"
+        },
+        {
+            "@id": "https://ror.org/02a8eka68",
+            "@type": "Organization",
+            "name": "LifeWatch ERIC",
+            "url": "https://www.lifewatch.eu/"
+        },
+        {
+            "@id": "https://orcid.org/0000-0002-1784-2920",
+            "@type": "Person",
+            "affiliation": "Lifewatch ERIC",
+            "name": "Anne Fouilloux"
+        },
+        {
+            "@id": "https://ror.org/00k4n6c32",
+            "@type": "Organization",
+            "name": "European Commission",
+            "url": "https://commission.europa.eu/"
+        },
+        {
+            "@id": "https://cordis.europa.eu/project/id/101129751",
+            "@type": "Grant",
+            "funder": {
+                "@id": "https://ror.org/00k4n6c32"
+            },
+            "identifier": "101129751",
+            "name": "OSCARS: Open Science Clusters' Action for Research and Society"
+        },
+        {
+            "@id": "https://spdx.org/licenses/MIT",
+            "@type": "CreativeWork",
+            "description": "MIT licence for the code.",
+            "name": "MIT License"
+        },
+        {
+            "@id": "https://w3id.org/np/RAQXwdUrfZ40k2MdeDv9fokzyh35UKuN3w17G2yO4Wm8A",
+            "@type": [
+                "CreativeWork",
+                "Profile"
+            ],
+            "description": "The FAIR Enabling Resources the Earth-observation community of OSCARS-FIESTA agreed to use.",
+            "name": "FAIR Implementation Profile: Earth Observation (OSCARS-FIESTA), v1.0.2"
+        },
+        {
+            "@id": "#study-area",
+            "@type": "Place",
+            "geo": {
+                "@id": "#study-area-box"
+            },
+            "name": "North Pacific (170°E–110°W, 15–60°N; box shows the part east of the dateline)"
+        },
+        {
+            "@id": "#study-area-box",
+            "@type": "GeoShape",
+            "box": "15 -180 60 -110",
+            "name": "Bounding box of North Pacific (170°E–110°W, 15–60°N; box shows the part east of the dateline)"
+        },
+        {
+            "@id": "#version-doi",
+            "@type": "PropertyValue",
+            "name": "Version DOI",
+            "propertyID": "https://registry.identifiers.org/registry/doi",
+            "url": "https://doi.org/10.5281/zenodo.20811614",
+            "value": "10.5281/zenodo.20811614"
+        },
+        {
+            "@id": "https://doi.org/10.5281/zenodo.20811614",
+            "@type": "CreativeWork",
+            "description": "Archived release: full source tree, results and figures.",
+            "license": {
+                "@id": "https://spdx.org/licenses/MIT"
+            },
+            "name": "Release v0.1.0 (Zenodo version DOI)"
+        },
+        {
+            "@id": "https://w3id.org/sciencelive/np/RABINnMx1JSQG_DJlcsbCwExgkh8rtU7aBvVIHIRaCaB4",
+            "@type": "CreativeWork",
+            "additionalType": "Nanopublication",
+            "encodingFormat": "application/trig",
+            "name": "PICO Research Question (FORRT chain step 01)"
+        },
+        {
+            "@id": "https://w3id.org/sciencelive/np/RAdwLjudptnVRmoBQ0B8bioUYCvDGfyRGDW7fhBvejKzU",
+            "@type": "CreativeWork",
+            "additionalType": "Nanopublication",
+            "encodingFormat": "application/trig",
+            "name": "AIDA Sentence (FORRT chain step 02)"
+        },
+        {
+            "@id": "https://w3id.org/sciencelive/np/RAf0RJnRYzvA9zKc7keUMD1OA5T03-TGNDXJqKoajhAik",
+            "@type": "CreativeWork",
+            "additionalType": "Nanopublication",
+            "encodingFormat": "application/trig",
+            "name": "FORRT Claim (FORRT chain step 03)"
+        },
+        {
+            "@id": "https://w3id.org/sciencelive/np/RAMCIV3OiYyQl2edJEQxH6x7_b8-1JB-d8meP6o9pJU5s",
+            "@type": "CreativeWork",
+            "additionalType": "Nanopublication",
+            "encodingFormat": "application/trig",
+            "name": "FORRT Replication Study (FORRT chain step 04)"
+        },
+        {
+            "@id": "https://w3id.org/sciencelive/np/RAtYPP0Z0nsACz8KP0sIHBvrnXf8390hliiM-GtrdLgyE",
+            "@type": "CreativeWork",
+            "additionalType": "Nanopublication",
+            "encodingFormat": "application/trig",
+            "name": "FORRT Replication Outcome (FORRT chain step 05)"
+        },
+        {
+            "@id": "https://w3id.org/sciencelive/np/RAkJzj0lupwfM8Wkcp-yJshknuSQ6SlvG4g6RCtu1jFXo",
+            "@type": "CreativeWork",
+            "additionalType": "Nanopublication",
+            "encodingFormat": "application/trig",
+            "name": "CiTO Citation (FORRT chain step 06)"
+        },
+        {
+            "@id": "https://doi.org/10.1186/gb-2006-7-10-r100",
+            "@type": "ScholarlyArticle",
+            "name": "Carpenter et al. 2006, CellProfiler"
+        },
+        {
+            "@id": "https://doi.org/10.1371/journal.pbio.2005970",
+            "@type": "ScholarlyArticle",
+            "name": "McQuin et al. 2018, CellProfiler 3.0"
+        },
+        {
+            "@id": "https://doi.org/10.1002/2015JD024257",
+            "@type": "ScholarlyArticle",
+            "name": "Guan & Waliser 2015, detection of atmospheric rivers"
+        },
+        {
+            "@id": "https://doi.org/10.1002/qj.3803",
+            "@type": "ScholarlyArticle",
+            "name": "Hersbach et al. 2020, The ERA5 global reanalysis"
+        },
+        {
+            "@id": "https://gxy.io/GTN:T00182",
+            "@type": "CreativeWork",
+            "name": "Object tracking using CellProfiler (Galaxy Training Network)"
+        },
+        {
+            "@id": "https://w3id.org/ro/crate/1.2",
+            "@type": "CreativeWork",
+            "name": "https://w3id.org/ro/crate/1.2"
+        },
+        {
+            "@id": "https://snakemake.readthedocs.io/",
+            "@type": "CreativeWork",
+            "name": "Snakemake documentation"
+        },
+        {
+            "@id": "https://galaxyproject.org/",
+            "@type": "CreativeWork",
+            "name": "https://galaxyproject.org/"
+        },
+        {
+            "@id": "https://creativecommons.org/licenses/by/4.0/",
+            "@type": "CreativeWork",
+            "name": "Creative Commons Attribution 4.0 International"
+        }
+    ]
 }
